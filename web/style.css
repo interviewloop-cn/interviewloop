@@ -25,7 +25,7 @@ button.sec{background:var(--card);border:1px solid var(--line);padding:8px 14px;
 button:disabled{opacity:.5;cursor:not-allowed}
 .note{padding:10px 12px;border-radius:8px;font-size:13px;margin:8px 0}.note.warn{background:var(--warn-bg);color:var(--warn)}.note.ok{background:var(--ok-bg);color:var(--ok)}
 .out{border:1px solid var(--line);border-radius:var(--radius);background:var(--card);padding:16px;min-height:80px}
-.out pre{background:var(--code);padding:10px;border-radius:8px;overflow:auto;font-size:13px}
+.out pre{background:var(--code);padding:10px;border-radius:8px;overflow:auto;font-size:13px;white-space:pre-wrap;word-break:break-word}
 .out code{background:var(--code);padding:1px 5px;border-radius:4px;font-size:.92em}
 .out table{border-collapse:collapse;width:100%;font-size:13px;margin:8px 0;display:block;overflow-x:auto}
 .out th,.out td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}

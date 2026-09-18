@@ -2,7 +2,7 @@
    - 预缓存应用外壳 + 协议 + 分类库 + 模板，断网可用
    - 只拦截同源 GET，网络优先、断网回退缓存；用户主动触发的模型 / 语音 API 请求（跨域）一律不经过本 worker
    - 除预缓存外不发起任何网络请求 */
-const VERSION = 'il-v1.1.0';
+const VERSION = 'il-v1.1.1';
 const SHELL = [
   './', './index.html', './demo.html', './app.js', './md.js', './style.css', './manifest.webmanifest',
   './icon.svg', './icon-192.png', './icon-512.png',
