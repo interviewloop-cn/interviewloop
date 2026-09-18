@@ -1,0 +1,11 @@
+# 本地上下文与私有材料，永不进仓库
+CLAUDE.md
+_private/
+*.private.md
+.DS_Store
+# 用户本地手册/笔记（如误放进仓库目录）
+handbook.local.md
+notes/
+
+# 本地开发配置
+.claude/
