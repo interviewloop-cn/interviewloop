@@ -2,7 +2,7 @@
 market: cn
 version: 1
 file: interviewer-types
-scope: experienced-hire (one candidate, one or more interviewers)
+scope: one candidate (experienced hire or campus), one or more interviewers
 source: cn/interviewer-types.md v1
 language: en
 ---

@@ -2,7 +2,7 @@
 market: cn
 version: 1
 file: stages
-scope: experienced-hire (one candidate, one or more interviewers)
+scope: one candidate (experienced hire or campus), one or more interviewers
 source: cn/stages.md v1
 language: en
 ---

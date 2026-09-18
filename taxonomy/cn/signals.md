@@ -2,7 +2,7 @@
 market: cn
 version: 1
 file: signals
-scope: 社招（一位候选人，面试官一人或多人）
+scope: 一位候选人（不分社招 / 校招），面试官一人或多人
 ---
 
 # 通过 / 不通过信号（cn）

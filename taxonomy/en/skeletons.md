@@ -2,7 +2,7 @@
 market: cn
 version: 2
 file: skeletons
-scope: experienced-hire (one candidate, one or more interviewers)
+scope: one candidate (experienced hire or campus), one or more interviewers
 source: cn/skeletons.md v2
 language: en
 ---

@@ -1,4 +1,4 @@
-# InterviewLoop · Self-Training System for Experienced-Hire Candidates
+# InterviewLoop · Self-Training System for Interview Candidates
 
 > English first, Chinese below. **Chinese is the canonical version**; the English section is generated from it (source: zh section, protocol v0.4, glossary v1). Where they differ, the Chinese text wins. All English terms follow `GLOSSARY.md`.
 
@@ -65,7 +65,7 @@ The web page under `web/` is one client of the protocol: pick a model endpoint, 
 2. Choose **Install** (desktop: the icon in the address bar; iOS Safari: Share → Add to Home Screen; Android Chrome: menu → Install app).
 3. Open it from your desktop or home screen. After the first load it works offline.
 
-## Scope of v0
+## Scope of v1.0
 
 - **One candidate, experienced hire or campus, with one or more interviewers.** Group interviews and leaderless discussions are not covered: their scoring rests on relative performance and you cannot supply the other candidates' answers. Campus-specific interviewer types need continued sample intake and iterate with contributions and feedback.
 - **One market package: `cn`.** The taxonomy was written from interviews in the Chinese internet industry. English files are translations with cultural notes, not a separate market package. An overseas package starts only after that market has ≥10 interview records submitted through the contribution template.
@@ -99,7 +99,7 @@ No real company, person or business figure appears anywhere in this repository, 
 
 ---
 
-# InterviewLoop · 社招候选人自训练系统
+# InterviewLoop · 面试候选人自训练系统
 
 > 中文是唯一主版本。上方英文由本节生成（协议 v0.4）。两者不一致时以中文为准。
 
@@ -166,7 +166,7 @@ npx skills add interviewloop-cn/interviewloop
 2. 选择**安装**（桌面端：地址栏的安装图标；iOS Safari：分享 → 添加到主屏幕；Android Chrome：菜单 → 安装应用）。
 3. 从桌面或主屏幕打开。首次加载后断网可用。
 
-## v0 边界
+## v1.0 边界
 
 - **一位候选人，不分社招校招，面试官一人或多人。** 群面、无领导小组不覆盖：评分看组内相对表现，你给不出其他候选人的应答。校招特有的面试官类型需要持续录入样本，按贡献与反馈程度迭代。
 - **只有一个市场包：`cn`。** 分类库源于中国互联网社招。英文文件是翻译加文化注释，不是独立市场包。海外市场包的启动条件：该市场累计 ≥10 场按贡献模板提交的记录。

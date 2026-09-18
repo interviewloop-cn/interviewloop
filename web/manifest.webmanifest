@@ -1,5 +1,5 @@
 {
-  "name": "InterviewLoop · 社招候选人自训练系统",
+  "name": "InterviewLoop · 面试候选人自训练系统",
   "short_name": "InterviewLoop",
   "description": "把每一次面试变成可积累的训练样本。手册、笔记、key 全部只在你的浏览器里。",
   "start_url": "./index.html",

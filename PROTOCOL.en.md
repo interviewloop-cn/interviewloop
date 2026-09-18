@@ -4,7 +4,7 @@ language: en
 note: Translation. Where this file and PROTOCOL.md differ, the Chinese version is authoritative.
 ---
 
-# PROTOCOL.md · InterviewLoop Self-Training System for Experienced-Hire Candidates (v0.4)
+# PROTOCOL.md · InterviewLoop Self-Training System for Interview Candidates (v0.4)
 
 > This file is the cross-model master protocol. Give this file + the five files in `taxonomy/` + your personal handbook (if any) + the input for this run to any large language model, and it can run. The three modules each run independently, and can also be used as the loop A → interview → B → C.
 > v0.3: incorporates the 13 revisions from the seventh review round (4 contradictions, 6 gaps, 3 broken threads).

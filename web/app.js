@@ -1,4 +1,4 @@
-/* InterviewLoop web client · v0
+/* InterviewLoop web client · v1.0
    纯静态、BYOK、全部数据只在 localStorage。除用户主动触发的模型 / 语音请求外不发任何网络请求。 */
 (() => {
 'use strict';
@@ -14,7 +14,7 @@ const LS = {
 /* ---------- i18n ---------- */
 const T = {
   zh: {
-    subtitle: '社招候选人自训练系统 · v0', install: '安装到桌面',
+    subtitle: '面试候选人自训练系统 · v1.0', install: '安装到桌面',
     privacy: '你的笔记、手册和 key 不经过任何服务器。所有内容只存在这个浏览器里；导出即备份。',
     'tab.hb': '手册', 'tab.a': 'A · 面前预演', 'tab.b': 'B · 面后复盘', 'tab.c': 'C · 结果回填', 'tab.t': '转录', 'tab.s': '设置',
     copy: '复制', download: '下载 .md', raw: '切换原文/渲染', stop: '停止', usehb: '附带个人手册',
@@ -31,7 +31,7 @@ const T = {
     tsent: '已填入模块 B 的转录框', micdenied: '无法访问麦克风：',
   },
   en: {
-    subtitle: 'Self-Training System for Experienced-Hire Candidates · v0', install: 'Install as app',
+    subtitle: 'Self-Training System for Interview Candidates · v1.0', install: 'Install as app',
     privacy: 'Your notes, handbook and key never pass through a server. Everything lives only in this browser; export is your backup.',
     'tab.hb': 'Handbook', 'tab.a': 'A · Pre-interview Rehearsal', 'tab.b': 'B · Post-interview Review', 'tab.c': 'C · Outcome Backfill', 'tab.t': 'Transcribe', 'tab.s': 'Settings',
     copy: 'Copy', download: 'Download .md', raw: 'Toggle raw/rendered', stop: 'Stop', usehb: 'Attach personal handbook',
