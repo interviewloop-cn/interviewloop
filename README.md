@@ -1,107 +1,8 @@
-# InterviewLoop · Self-Training System for Interview Candidates
-
-> English first, Chinese below. **Chinese is the canonical version**; the English section is generated from it (source: zh section, protocol v0.4, glossary v1). Where they differ, the Chinese text wins. All English terms follow `GLOSSARY.md`.
-
-## What this is
-
-**InterviewLoop uses AI to train you, not to interview you.** It does not answer for you and does not play the interviewer. It trains the structure of your answers and your understanding of the role and the industry, one real interview at a time, so that you and your next job fit better. Every interview becomes a training sample you can accumulate; the sample belongs to you and never leaves your machine.
-
-```
-Module A  Pre-interview rehearsal
-   → the interview →
-Module B  Post-interview review
-   →
-Module C  Outcome backfill
-   → your handbook grows one row →
-Module A  next interview
-```
-
-Three steps close a loop. Your personal handbook (weakness tracker, calibration records, signal hit log) grows one interview at a time. Every prediction the tool makes is later scored against the real outcome, and the correction goes back into your handbook. The tool never fills in what only you can know: those places are left blank and marked `【空位·思考漏洞】` (Blank · Thinking Gap). A blank is a training point, not a missing feature.
-
-Even if this round fails, the sample grows. With enough of your own interviews on record, the pattern that keeps costing you becomes visible, and that is what gets you hired.
-
-## Read this before you use it
-
-**It is not a shortcut.** Tools that answer for you in real time, or an AI that plays interviewer, add nothing to your own thinking. This one makes you do the thinking: the JD and your résumé are both required, the post-interview notes are yours to write, and the blanks are yours to fill. If you want something that answers for you, this is the wrong tool.
-
-**It only works for people willing to be honest with themselves.** The tool cannot stop you from writing notes that flatter you. Every judgement it makes is only as good as the notes you give it, and every count it keeps is a count you filled in. This is a precondition, not a loophole.
-
-**What text it takes.** Module A takes the JD and your résumé points; Module B takes post-interview notes (on the template) and, optionally, a transcript (the `[VERBATIM]` tag is only available with one); Module C takes a one-line result. All three can carry your personal handbook.
-
-**Nothing goes through a server.** Your handbook, notes and transcripts stay on your machine or in your browser. Persistence is markdown export and import. If you use the web page, you bring your own model API key, and the key is stored only in your browser.
-
-## How to use it
-
-The product is a markdown protocol. Any large language model can run it. The Claude Code skill is the primary way to use it (it reads and writes your handbook for you); the web page is the zero-setup way to try it.
-
-**Claude Code skill (recommended)**
-
-```
-npx skills add interviewloop-cn/interviewloop
-```
-Then, in any directory, say "prepare me for this interview" with the JD, "debrief today's interview" with your notes, transcript or recording, or "reached round 2". The skill keeps your handbook at `~/InterviewLoop-workspace/handbook.md`, transcribes recordings locally, drafts your notes from the transcript with every count sourced to a verbatim line, and writes each increment back to the handbook.
-
-**Any model, by hand**
-
-1. Give the model `PROTOCOL.md` + the five files in `taxonomy/cn/` + your handbook (if you have one) + this interview's input.
-2. Copy the increment the model outputs into your `handbook.md`.
-3. After the outcome is known, run Module C. It writes back one row and, if the prediction was wrong, one calibration record.
-
-Three module inputs:
-
-| Module | You provide | You get |
-|---|---|---|
-| A · Pre-interview Rehearsal | JD and résumé points (both required), (handbook) | mismatch intercept, JD ↔ evidence map, type forecast, 5-minute pre-interview checklist, QA plan (structure plus one reference sentence built from your résumé), a three-tag self-intro draft; optional follow-up chain rehearsal where the model only asks |
-| B · Post-interview Review | post-interview notes, or a transcript, or a recording, or spoken recall (the tool asks only for what is missing), (handbook), (Module A output) | type judgement, follow-up chain and cross-round comparison, pitfall tracking, signal table → outcome prediction, handbook increment |
-| C · Outcome Backfill | one line: pass / fail / reached round N / unknown | one row written back, calibration record if needed |
-
-`SKILL.md` is the entry point of the Claude Code skill: it loads the protocol, manages your local workspace and writes increments back to the handbook. It contains no judgement rules of its own.
-
-The web page under `web/` is one client of the protocol: pick a model endpoint, paste your own API key (stored only in your browser), and run the three modules. It works offline after the first load; the only network requests it ever makes are the ones you trigger to your own model or speech endpoint.
-
-### Install the web page as an app (PWA)
-
-1. Open the page in a browser: `https://interviewloop-cn.github.io/interviewloop/web/` (Chrome, Edge or Safari). The repository root redirects there.
-2. Choose **Install** (desktop: the icon in the address bar; iOS Safari: Share → Add to Home Screen; Android Chrome: menu → Install app).
-3. Open it from your desktop or home screen. After the first load it works offline.
-
-## Scope of v1.0
-
-- **One candidate, experienced hire or campus, with one or more interviewers.** Group interviews and leaderless discussions are not covered: their scoring rests on relative performance and you cannot supply the other candidates' answers. Campus-specific interviewer types need continued sample intake and iterate with contributions and feedback.
-- **One market package: `cn`.** The taxonomy was written from interviews in the Chinese internet industry. English files are translations with cultural notes, not a separate market package. An overseas package starts only after that market has ≥10 interview records submitted through the contribution template.
-- **The taxonomy is a seed, not a census.** It came from a small sample in one job function. "Unclassified" is a valid output; forcing a match is not.
-
-## Repository layout
-
-```
-PROTOCOL.md         main protocol (Chinese, canonical)
-PROTOCOL.en.md      English translation, header cites the Chinese version
-SKILL.md            Claude Code skill: workspace, routing, local transcription, handbook write-back
-scripts/            transcribe.py (local whisper), metrics.py (speaking rate, filler density, longest answer), check_quotes.py (verbatim-quote check)
-GLOSSARY.md         zh↔en term table; all translation goes through it
-taxonomy/cn/        interviewer types, skeletons, signals, pitfalls, stages (market: cn)
-taxonomy/en/        translation of cn/ with cultural notes
-templates/zh|en/    handbook, post-interview notes, contribution templates
-example/            a fictional candidate (orthopaedic-implant clinical marketing), six interviews, one full A→B→C run; SOURCES.md lists the public data the jargon and magnitudes are calibrated against
-web/                static page + PWA (index.html, app.js, sw.js, manifest)
-index.html          redirects to web/
-LICENSE             CC BY-SA 4.0
-ROADMAP.md
-```
-
-## Contributing
-
-Only `taxonomy/` accepts pull requests, through the fixed templates in `templates/`. No company names, no personal names, no evaluative language. Transcript excerpts are accepted once names and company names are removed. The template fields are the anonymisation boundary. There is no promised merge cadence.
-
-## Privacy note on this repository
-
-No real company, person or business figure appears anywhere in this repository, including the author's own. Every example is fictional, in an industry the author has never worked in; its jargon and orders of magnitude are calibrated against public sources listed in `example/SOURCES.md`.
-
----
+**[中文](#interviewloop--面试候选人自训练系统) ｜ [English](#interviewloop--self-training-system-for-interview-candidates)**
 
 # InterviewLoop · 面试候选人自训练系统
 
-> 中文是唯一主版本。上方英文由本节生成（协议 v0.4）。两者不一致时以中文为准。
+> 中文是唯一主版本，英文由中文生成（协议 v0.4），两者不一致时以中文为准。
 
 ## 这是什么
 
@@ -197,3 +98,104 @@ ROADMAP.md
 ## 关于本仓库的脱敏
 
 仓库内不出现任何真实公司、人名、真实业务数字，包括作者自己的。所有样本均为虚构，行业与作者无关；行话与数量级按 `example/SOURCES.md` 里的公开资料校准。
+
+---
+
+# InterviewLoop · Self-Training System for Interview Candidates
+
+> **Chinese is the canonical version**; the English section is generated from it (source: zh section, protocol v0.4, glossary v1). Where they differ, the Chinese text wins. All English terms follow `GLOSSARY.md`.
+
+## What this is
+
+**InterviewLoop uses AI to train you, not to interview you.** It does not answer for you and does not play the interviewer. It trains the structure of your answers and your understanding of the role and the industry, one real interview at a time, so that you and your next job fit better. Every interview becomes a training sample you can accumulate; the sample belongs to you and never leaves your machine.
+
+```
+Module A  Pre-interview rehearsal
+   → the interview →
+Module B  Post-interview review
+   →
+Module C  Outcome backfill
+   → your handbook grows one row →
+Module A  next interview
+```
+
+Three steps close a loop. Your personal handbook (weakness tracker, calibration records, signal hit log) grows one interview at a time. Every prediction the tool makes is later scored against the real outcome, and the correction goes back into your handbook. The tool never fills in what only you can know: those places are left blank and marked `【空位·思考漏洞】` (Blank · Thinking Gap). A blank is a training point, not a missing feature.
+
+Even if this round fails, the sample grows. With enough of your own interviews on record, the pattern that keeps costing you becomes visible, and that is what gets you hired.
+
+## Read this before you use it
+
+**It is not a shortcut.** Tools that answer for you in real time, or an AI that plays interviewer, add nothing to your own thinking. This one makes you do the thinking: the JD and your résumé are both required, the post-interview notes are yours to write, and the blanks are yours to fill. If you want something that answers for you, this is the wrong tool.
+
+**It only works for people willing to be honest with themselves.** The tool cannot stop you from writing notes that flatter you. Every judgement it makes is only as good as the notes you give it, and every count it keeps is a count you filled in. This is a precondition, not a loophole.
+
+**What text it takes.** Module A takes the JD and your résumé points; Module B takes post-interview notes (on the template) and, optionally, a transcript (the `[VERBATIM]` tag is only available with one); Module C takes a one-line result. All three can carry your personal handbook.
+
+**Nothing goes through a server.** Your handbook, notes and transcripts stay on your machine or in your browser. Persistence is markdown export and import. If you use the web page, you bring your own model API key, and the key is stored only in your browser.
+
+## How to use it
+
+The product is a markdown protocol. Any large language model can run it. The Claude Code skill is the primary way to use it (it reads and writes your handbook for you); the web page is the zero-setup way to try it.
+
+**Claude Code skill (recommended)**
+
+```
+npx skills add interviewloop-cn/interviewloop
+```
+Then, in any directory, say "prepare me for this interview" with the JD, "debrief today's interview" with your notes, transcript or recording, or "reached round 2". The skill keeps your handbook at `~/InterviewLoop-workspace/handbook.md`, transcribes recordings locally, drafts your notes from the transcript with every count sourced to a verbatim line, and writes each increment back to the handbook.
+
+**Any model, by hand**
+
+1. Give the model `PROTOCOL.md` + the five files in `taxonomy/cn/` + your handbook (if you have one) + this interview's input.
+2. Copy the increment the model outputs into your `handbook.md`.
+3. After the outcome is known, run Module C. It writes back one row and, if the prediction was wrong, one calibration record.
+
+Three module inputs:
+
+| Module | You provide | You get |
+|---|---|---|
+| A · Pre-interview Rehearsal | JD and résumé points (both required), (handbook) | mismatch intercept, JD ↔ evidence map, type forecast, 5-minute pre-interview checklist, QA plan (structure plus one reference sentence built from your résumé), a three-tag self-intro draft; optional follow-up chain rehearsal where the model only asks |
+| B · Post-interview Review | post-interview notes, or a transcript, or a recording, or spoken recall (the tool asks only for what is missing), (handbook), (Module A output) | type judgement, follow-up chain and cross-round comparison, pitfall tracking, signal table → outcome prediction, handbook increment |
+| C · Outcome Backfill | one line: pass / fail / reached round N / unknown | one row written back, calibration record if needed |
+
+`SKILL.md` is the entry point of the Claude Code skill: it loads the protocol, manages your local workspace and writes increments back to the handbook. It contains no judgement rules of its own.
+
+The web page under `web/` is one client of the protocol: pick a model endpoint, paste your own API key (stored only in your browser), and run the three modules. It works offline after the first load; the only network requests it ever makes are the ones you trigger to your own model or speech endpoint.
+
+### Install the web page as an app (PWA)
+
+1. Open the page in a browser: `https://interviewloop-cn.github.io/interviewloop/web/` (Chrome, Edge or Safari). The repository root redirects there.
+2. Choose **Install** (desktop: the icon in the address bar; iOS Safari: Share → Add to Home Screen; Android Chrome: menu → Install app).
+3. Open it from your desktop or home screen. After the first load it works offline.
+
+## Scope of v1.0
+
+- **One candidate, experienced hire or campus, with one or more interviewers.** Group interviews and leaderless discussions are not covered: their scoring rests on relative performance and you cannot supply the other candidates' answers. Campus-specific interviewer types need continued sample intake and iterate with contributions and feedback.
+- **One market package: `cn`.** The taxonomy was written from interviews in the Chinese internet industry. English files are translations with cultural notes, not a separate market package. An overseas package starts only after that market has ≥10 interview records submitted through the contribution template.
+- **The taxonomy is a seed, not a census.** It came from a small sample in one job function. "Unclassified" is a valid output; forcing a match is not.
+
+## Repository layout
+
+```
+PROTOCOL.md         main protocol (Chinese, canonical)
+PROTOCOL.en.md      English translation, header cites the Chinese version
+SKILL.md            Claude Code skill: workspace, routing, local transcription, handbook write-back
+scripts/            transcribe.py (local whisper), metrics.py (speaking rate, filler density, longest answer), check_quotes.py (verbatim-quote check)
+GLOSSARY.md         zh↔en term table; all translation goes through it
+taxonomy/cn/        interviewer types, skeletons, signals, pitfalls, stages (market: cn)
+taxonomy/en/        translation of cn/ with cultural notes
+templates/zh|en/    handbook, post-interview notes, contribution templates
+example/            a fictional candidate (orthopaedic-implant clinical marketing), six interviews, one full A→B→C run; SOURCES.md lists the public data the jargon and magnitudes are calibrated against
+web/                static page + PWA (index.html, app.js, sw.js, manifest)
+index.html          redirects to web/
+LICENSE             CC BY-SA 4.0
+ROADMAP.md
+```
+
+## Contributing
+
+Only `taxonomy/` accepts pull requests, through the fixed templates in `templates/`. No company names, no personal names, no evaluative language. Transcript excerpts are accepted once names and company names are removed. The template fields are the anonymisation boundary. There is no promised merge cadence.
+
+## Privacy note on this repository
+
+No real company, person or business figure appears anywhere in this repository, including the author's own. Every example is fictional, in an industry the author has never worked in; its jargon and orders of magnitude are calibrated against public sources listed in `example/SOURCES.md`.

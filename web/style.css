@@ -39,3 +39,5 @@ button:disabled{opacity:.5;cursor:not-allowed}
 .kv{font-size:13px;color:var(--muted)}
 details summary{cursor:pointer}
 @media (max-width:600px){main{padding:12px}.card{padding:12px}}
+
+#p-about p,#p-about li{line-height:1.75}#p-about ul,#p-about ol{padding-left:22px}#p-about li{margin:6px 0}
