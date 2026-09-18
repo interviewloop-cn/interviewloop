@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InterviewLoop</title>
+<meta name="theme-color" content="#1f2a44">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top">
+  <div><h1>InterviewLoop</h1><div class="sub" data-i18n="subtitle">社招候选人自训练系统 · v0</div></div>
+  <div class="spacer"></div>
+  <select id="lang" title="Language"><option value="zh">中文</option><option value="en">English</option></select>
+  <select id="market" title="Market package" disabled><option value="cn">market: cn</option></select>
+  <button id="btn-install" class="sec" hidden data-i18n="install">安装到桌面</button>
+  <div class="privacy" data-i18n="privacy">你的笔记、手册和 key 不经过任何服务器。所有内容只存在这个浏览器里；导出即备份。</div>
+</header>
+
+<!-- 首次打开：三步说明页，读完解锁 -->
+<section id="gate" class="gate card" hidden>
+  <h2 data-i18n="gate.title">用之前，先看三步</h2>
+  <ol>
+    <li><b data-i18n="gate.s1t">这是什么。</b> <span data-i18n="gate.s1">用 AI 训练你，不是用 AI 面试你。它不替你答题，训练的是你的应答结构和你对岗位、行业的认知。三个模块：面前预演（A）→ 面试 → 面后复盘（B）→ 结果回填（C）→ 手册长一行 → 下一次 A。每次预测都会被真实结果打分，纠正写回你的手册；这轮没过，样本也在长。</span>
+      <pre>A 面前预演 → 面试 → B 面后复盘 → C 结果回填 → 手册更新 → 下一次 A</pre></li>
+    <li><b data-i18n="gate.s2t">数据在哪。</b> <span data-i18n="gate.s2">本页是纯静态页。手册、笔记、转录、API key 全部只存在这个浏览器的本地存储里，不经过任何服务器。跑模块时，浏览器直接把协议 + 分类库 + 你的输入发给你自己填的模型接口，不经过第三方。清浏览器数据 = 清空一切，所以请定期导出手册。</span></li>
+    <li><b data-i18n="gate.s3t">前提。</b> <span data-i18n="gate.s3">这不是捷径：JD 和简历都必须给，笔记要你自己写，空位要你自己填。只对愿意对自己诚实的人有用：工具无法防止你给自己写有利的笔记，它的每条判断只和你的笔记一样好。覆盖一位候选人的面试，不分社招校招；群面不覆盖。网页是零门槛试用，Claude Code skill 才是完整版（本地转录、手册自动写回）。</span></li>
+  </ol>
+  <label class="chk"><input type="checkbox" id="gate-ok"> <span data-i18n="gate.ok">我读完了，知道数据只在本地、知道这个工具的前提。</span></label>
+  <div class="btns"><button id="gate-go" class="pri" disabled data-i18n="gate.go">进入</button></div>
+</section>
+
+<div id="app" hidden>
+<nav class="tabs" id="tabs">
+  <button data-tab="handbook" class="on" data-i18n="tab.hb">手册</button>
+  <button data-tab="A" data-i18n="tab.a">A · 面前预演</button>
+  <button data-tab="B" data-i18n="tab.b">B · 面后复盘</button>
+  <button data-tab="C" data-i18n="tab.c">C · 结果回填</button>
+  <button data-tab="transcribe" data-i18n="tab.t">转录</button>
+  <button data-tab="settings" data-i18n="tab.s">设置</button>
+</nav>
+
+<main>
+
+<!-- 手册 -->
+<section class="panel on" id="p-handbook">
+  <div class="card">
+    <h2 data-i18n="hb.title">个人手册（只存在本浏览器）</h2>
+    <p class="hint" data-i18n="hb.hint">模板来自 templates/handbook.md。跑完 B 或 C 后，把下面"待合并的手册增量"手动合并进来。自动保存。</p>
+    <textarea id="hb" class="tall" spellcheck="false"></textarea>
+    <div class="btns">
+      <button id="hb-export" class="pri" data-i18n="hb.export">导出 handbook.md</button>
+      <button id="hb-import-btn" class="sec" data-i18n="hb.import">导入 .md</button>
+      <input type="file" id="hb-file" accept=".md,.txt,text/markdown,text/plain" hidden>
+      <button id="hb-reset" class="sec" data-i18n="hb.reset">恢复为空模板</button>
+      <span id="hb-status" class="status"></span>
+    </div>
+  </div>
+  <div class="card" id="hb-inc-card" hidden>
+    <h2 data-i18n="hb.inc">待合并的手册增量（来自最近一次 B / C 输出）</h2>
+    <div class="out" id="hb-inc"></div>
+    <div class="btns"><button id="hb-inc-copy" class="sec" data-i18n="copy">复制</button><button id="hb-inc-clear" class="sec" data-i18n="hb.incclear">已合并，清除</button></div>
+  </div>
+</section>
+
+<!-- 模块 A -->
+<section class="panel" id="p-A">
+  <div class="card">
+    <h2 data-i18n="a.title">模块 A · 面前预演</h2>
+    <p class="hint" data-i18n="a.hint">输出：错位拦截与硬门槛 → JD↔证据映射 → 类型预判与骨架 → 5 分钟核对单 → QA 预案（结构 + 参考句）→ 带标记的自介半成品。不写答案全文，不预测通过率。</p>
+    <label class="f" data-i18n="a.jd">JD 全文（必填）</label><textarea id="a-jd" spellcheck="false"></textarea>
+    <label class="f" data-i18n="a.resume">简历要点（必填；简历原文或 5–10 条带数字的经历。本浏览器记住，下次不用重填）</label><textarea id="a-resume" spellcheck="false"></textarea>
+    <div class="row">
+      <div><label class="f" data-i18n="a.round">轮次</label><select id="a-round"><option value="">—</option><option>一面</option><option>二面</option><option>交叉面</option><option>HR</option><option>终面</option></select></div>
+      <div><label class="f" data-i18n="a.interviewer">面试官身份（职务，不写姓名）</label><input type="text" id="a-interviewer"></div>
+      <div><label class="f" data-i18n="a.planned">原定时长（分钟）</label><input type="number" id="a-planned" min="5" max="180"></div>
+      <div><label class="f" data-i18n="a.intro">自介时长要求（如"3 分钟"）</label><input type="text" id="a-intro"></div>
+    </div>
+    <div class="row">
+      <div><label class="f" data-i18n="a.salary">期望薪资（可空）</label><input type="text" id="a-salary"></div>
+      <div><label class="f" data-i18n="a.start">可到岗时间（可空）</label><input type="text" id="a-start"></div>
+      <div><label class="f" data-i18n="a.jdsalary">JD 标注的薪资区间（原样抄，可空）</label><input type="text" id="a-jdsalary"></div>
+    </div>
+    <label class="chk"><input type="checkbox" id="a-usehb" checked> <span data-i18n="usehb">附带个人手册</span></label>
+    <div class="btns"><button id="a-run" class="pri" data-i18n="run">运行模块 A</button><button id="a-stop" class="sec" disabled data-i18n="stop">停止</button><span id="a-status" class="status"></span></div>
+  </div>
+  <div class="card">
+    <div class="btns" style="margin:0 0 10px"><button id="a-copy" class="sec" data-i18n="copy">复制</button><button id="a-download" class="sec" data-i18n="download">下载 .md</button><button id="a-raw" class="sec" data-i18n="raw">切换原文/渲染</button></div>
+    <div class="out" id="a-out"></div>
+  </div>
+</section>
+
+<!-- 模块 B -->
+<section class="panel" id="p-B">
+  <div class="card">
+    <h2 data-i18n="b.title">模块 B · 面后复盘</h2>
+    <p class="hint" data-i18n="b.hint">笔记模板能填多少填多少：填不全，模型会按材料完整度只问缺的 3–5 个问题。底部三个计数字段是硬信号的唯一依据，问不出 = 无法判断。输出固定三段：结论卡 / 明细 / 自检。</p>
+    <label class="f" data-i18n="b.notes">面后笔记（必填；模板已预填）</label><textarea id="b-notes" class="tall" spellcheck="false"></textarea>
+    <label class="f" data-i18n="b.transcript">转录（可选；有则粘贴，[原话] 标签只在有转录时可用）</label><textarea id="b-transcript" spellcheck="false"></textarea>
+    <label class="chk"><input type="checkbox" id="b-usea" checked> <span data-i18n="b.usea">附带最近一次模块 A 输出（用于对照预判与 QA 命中）</span></label>
+    <label class="chk"><input type="checkbox" id="b-usehb" checked> <span data-i18n="usehb">附带个人手册</span></label>
+    <div class="btns"><button id="b-run" class="pri" data-i18n="run.b">运行模块 B</button><button id="b-stop" class="sec" disabled data-i18n="stop">停止</button><span id="b-status" class="status"></span></div>
+  </div>
+  <div class="card">
+    <div class="btns" style="margin:0 0 10px"><button id="b-copy" class="sec" data-i18n="copy">复制</button><button id="b-download" class="sec" data-i18n="download">下载 .md</button><button id="b-raw" class="sec" data-i18n="raw">切换原文/渲染</button></div>
+    <div class="out" id="b-out"></div>
+  </div>
+</section>
+
+<!-- 模块 C -->
+<section class="panel" id="p-C">
+  <div class="card">
+    <h2 data-i18n="c.title">模块 C · 结果回填</h2>
+    <p class="hint" data-i18n="c.hint">一行字。写回场次记录；与 B 的预测比对；不一致则加一条校准记录。不推测原因，不建议下一步。</p>
+    <div class="row">
+      <label class="chk"><input type="radio" name="c-result" value="通过"> <span data-i18n="c.pass">通过</span></label>
+      <label class="chk"><input type="radio" name="c-result" value="未通过"> <span data-i18n="c.fail">未通过</span></label>
+      <label class="chk"><input type="radio" name="c-result" value="走到第 N 轮"> <span data-i18n="c.round">走到第 N 轮</span> <input type="number" id="c-n" min="2" max="9" style="width:70px;margin-left:6px"></label>
+      <label class="chk"><input type="radio" name="c-result" value="未知"> <span data-i18n="c.unknown">未知</span></label>
+    </div>
+    <label class="f" data-i18n="c.feedback">面试官反馈一句（有则记，无则空）</label><input type="text" id="c-feedback">
+    <label class="chk"><input type="checkbox" id="c-useb" checked disabled> <span data-i18n="c.useb">附带最近一次模块 B 输出（必需）</span></label>
+    <label class="chk"><input type="checkbox" id="c-usehb" checked> <span data-i18n="usehb">附带个人手册</span></label>
+    <div class="btns"><button id="c-run" class="pri" data-i18n="run.c">运行模块 C</button><button id="c-stop" class="sec" disabled data-i18n="stop">停止</button><span id="c-status" class="status"></span></div>
+  </div>
+  <div class="card">
+    <div class="btns" style="margin:0 0 10px"><button id="c-copy" class="sec" data-i18n="copy">复制</button><button id="c-download" class="sec" data-i18n="download">下载 .md</button><button id="c-raw" class="sec" data-i18n="raw">切换原文/渲染</button></div>
+    <div class="out" id="c-out"></div>
+  </div>
+</section>
+
+<!-- 转录 -->
+<section class="panel" id="p-transcribe">
+  <div class="card">
+    <h2 data-i18n="t.title">录音转录（实验性入口）</h2>
+    <div class="note warn" data-i18n="t.warn">录音前确认对方同意及当地法律。音频只在本页内存里，不上传、不保存到服务器；关闭页面即消失。</div>
+    <p class="hint" data-i18n="t.hint">两种转录方式，都由你主动触发：① 浏览器本地开源语音模型（首次需下载模型文件，之后离线可用）；② 你自己的语音接口 key（OpenAI 兼容 /audio/transcriptions）。本页不内嵌任何 key。</p>
+    <div class="btns">
+      <button id="t-rec" class="sec" data-i18n="t.rec">开始录音</button>
+      <button id="t-file-btn" class="sec" data-i18n="t.file">导入音频文件</button>
+      <input type="file" id="t-file" accept="audio/*" hidden>
+      <span id="t-audio-status" class="status"></span>
+    </div>
+    <audio id="t-audio" controls hidden style="width:100%;margin-top:10px"></audio>
+    <div class="row">
+      <div><label class="f" data-i18n="t.mode">转录方式</label><select id="t-mode"><option value="local" data-i18n="t.mode.local">本地模型（浏览器内运行）</option><option value="byok" data-i18n="t.mode.byok">BYOK 语音接口</option></select></div>
+      <div id="t-local-opts"><label class="f" data-i18n="t.model">本地模型</label><select id="t-model"><option value="Xenova/whisper-tiny">whisper-tiny（约 40MB，快）</option><option value="Xenova/whisper-base">whisper-base（约 75MB）</option><option value="Xenova/whisper-small">whisper-small（约 250MB，准）</option></select></div>
+      <div id="t-byok-opts" hidden>
+        <label class="f" data-i18n="t.url">接口地址</label><input type="text" id="t-url" placeholder="https://api.openai.com/v1">
+        <label class="f" data-i18n="t.key">语音接口 key（只存本浏览器）</label><input type="password" id="t-key" autocomplete="off">
+        <label class="f" data-i18n="t.amodel">模型名</label><input type="text" id="t-amodel" placeholder="whisper-1">
+      </div>
+    </div>
+    <div class="btns"><button id="t-run" class="pri" disabled data-i18n="t.run">开始转录</button><span id="t-status" class="status"></span></div>
+    <label class="f" data-i18n="t.out">转录结果（可编辑）</label><textarea id="t-out" class="tall" spellcheck="false"></textarea>
+    <div class="btns"><button id="t-toB" class="sec" data-i18n="t.toB">填入模块 B 的转录框</button><button id="t-download" class="sec" data-i18n="download">下载 .md</button></div>
+  </div>
+</section>
+
+<!-- 设置 -->
+<section class="panel" id="p-settings">
+  <div class="card">
+    <h2 data-i18n="s.title">模型与 key（只存本浏览器）</h2>
+    <div class="row">
+      <div><label class="f" data-i18n="s.provider">接口</label><select id="s-provider"><option value="anthropic">Anthropic（Claude）</option><option value="openai">OpenAI 兼容接口</option></select></div>
+      <div id="s-anthropic-opts"><label class="f" data-i18n="s.model">模型</label><select id="s-model">
+        <option value="claude-opus-5">claude-opus-5（默认）</option>
+        <option value="claude-sonnet-5">claude-sonnet-5</option>
+        <option value="claude-fable-5-1">claude-fable-5-1</option>
+        <option value="claude-haiku-4-5">claude-haiku-4-5</option>
+      </select></div>
+      <div id="s-openai-opts" hidden>
+        <label class="f" data-i18n="s.url">Base URL</label><input type="text" id="s-url" placeholder="https://api.openai.com/v1">
+        <label class="f" data-i18n="s.omodel">模型名</label><input type="text" id="s-omodel" placeholder="gpt-…">
+      </div>
+    </div>
+    <label class="f" data-i18n="s.key">API key</label><input type="password" id="s-key" autocomplete="off">
+    <div class="row" id="s-anthropic-more">
+      <div><label class="f" data-i18n="s.effort">思考深度（effort）</label><select id="s-effort"><option value="medium">medium</option><option value="high" selected>high</option><option value="low">low</option></select></div>
+      <div><label class="chk" style="margin-top:28px"><input type="checkbox" id="s-fallback" checked> <span data-i18n="s.fallback">启用服务端回退（beta；模型拒答时自动换模型。报错时可关掉）</span></label></div>
+    </div>
+    <div class="btns"><button id="s-test" class="sec" data-i18n="s.test">测试连接（会发一次最小请求）</button><span id="s-status" class="status"></span></div>
+    <p class="hint" data-i18n="s.note">协议与分类库随本页离线缓存。每次运行把 PROTOCOL + taxonomy 五个文件 + 你的输入一起发给上面的接口；Anthropic 接口对协议部分启用提示缓存以降低费用。</p>
+  </div>
+  <div class="card">
+    <h2 data-i18n="s.data">本地数据</h2>
+    <div class="kv" id="s-usage"></div>
+    <div class="btns"><button id="s-export-all" class="sec" data-i18n="s.exportall">导出全部（手册 + 最近 A/B/C 输出）</button><button id="s-wipe" class="sec" data-i18n="s.wipe">清除本浏览器全部数据</button></div>
+  </div>
+  <div class="card">
+    <h2 data-i18n="s.about">关于</h2>
+    <p class="hint"><span data-i18n="s.aboutp">协议本体是 PROTOCOL.md，任何大模型都能跑；本页只是它的一个客户端。分类库是种子不是全集，"未分类"是合法输出。</span> <a href="../README.md" target="_blank">README</a> · <a href="../PROTOCOL.md" target="_blank">PROTOCOL.md</a></p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
