@@ -47,14 +47,16 @@ const T = {
     tload: 'Loading local model (downloads once, then works offline)…', trun: 'Transcribing…', tdone: 'Transcription done', tfail: 'Transcription failed: ',
     tsent: 'Sent to Module B transcript box', micdenied: 'Microphone unavailable: ',
     // static UI
+    's.preset': 'Preset (fills the Base URL)', 's.presetnote': 'DeepSeek, Kimi, Qwen, Doubao, GLM and OpenAI all allow direct browser calls (verified 2026-09). Model names change often: copy the current one from the provider console; the example may be outdated.',
+    'ab.demo': 'See a full sample run (no key needed)', 'ab.prompt': 'No install: get the single-file prompt',
     'ab.h': 'AI that trains you, not AI that interviews you',
     'ab.p1': 'Most AI interview tools do the work for you: they feed you lines during the interview, or play interviewer and score you. Neither adds anything to your own thinking. InterviewLoop does the opposite: the AI only lays out structure, evidence and blanks; the thinking and the answering are yours.',
     'ab.h2': 'Three things it trains',
     'ab.t1': 'Answer structure: ten answer skeletons (judgement + basis + reversal condition, controlled concession, pre-case retrieval…). It gives structure and one reference sentence, never a full answer.',
     'ab.t2': 'Your understanding of the role and the industry: every JD line is mapped to your evidence, and gaps and mismatches are shown before you apply, so you see what the role is really buying and whether you fit.',
-    'ab.t3': 'Your judgement of yourself: after each interview you fill the signal table first, then predict the outcome; when the real result arrives the prediction is scored, and which signal was wrong goes back into your handbook.',
+    'ab.t3': 'Your judgement of yourself: after each interview you write down what you think happened before you know the result. The point is not to forecast accurately; it is to make you commit to a judgement and then check it, so you learn which of your readings of a room can be trusted.',
     'ab.h3': 'What you get',
-    'ab.p3': 'A handbook that is only yours: which pitfalls keep recurring in you, which pass signals actually hold for you, which claim you stated differently in two interviews. By the third interview the pattern you cannot see yourself becomes visible. A failed round still grows the sample; people who fix the spot that keeps costing them end up hired.',
+    'ab.p3': 'A handbook that is only yours: which pitfalls keep recurring in you, which pass signals actually hold for you, which claim you stated differently in two interviews. By the third interview the pattern you cannot see yourself becomes visible: in the author\'s own three real interviews, one pitfall showed up in all three, which gut-feel review had missed. A failed round still grows the sample.',
     'ab.h4': 'What it does not do',
     'ab.p4': 'It does not answer for you, play interviewer, write full scripts, score you, predict a pass rate, or evaluate interviewers and companies. Every place only you can fill is left blank and marked 【Blank · Thinking Gap】: a blank is a training point, not a missing feature.',
     'ab.h5': 'How to start',
@@ -63,7 +65,7 @@ const T = {
     'ab.s3': 'When the result arrives: open "C · Outcome Backfill"; one line goes back into the handbook, plus a calibration record if the prediction was wrong.',
     'ab.p5': 'Your notes, handbook and key live only in this browser and never pass through a server. This page is the zero-setup trial; the full version is the Claude Code skill (local transcription, notes drafted from the transcript, automatic handbook write-back): npx skills add interviewloop-cn/interviewloop',
     'ab.go': 'Start with Module A', 'ab.gate': 'Re-read the three steps',
-    'gate.title': 'Three things before you start', 'gate.s1t': 'What this is.', 'gate.s1': 'AI that trains you, not AI that interviews you. It does not answer for you; it trains the structure of your answers and your understanding of the role and industry. Three modules: Pre-interview Rehearsal (A) → interview → Post-interview Review (B) → Outcome Backfill (C) → your handbook grows one row → next A. Every prediction is scored against the real outcome and the correction goes back into your handbook; even a failed round grows the sample.',
+    'gate.title': 'Three things before you start', 'gate.s1t': 'What this is.', 'gate.s1': 'AI that trains you, not AI that interviews you. It does not answer for you; it trains the structure of your answers and your understanding of the role and industry. Three modules: Pre-interview Rehearsal (A) → interview → Post-interview Review (B) → Outcome Backfill (C) → your handbook grows one row → next A. You write down your judgement before the result arrives, then check it; the correction goes back into your handbook. Even a failed round grows the sample.',
     'gate.s2t': 'Where your data is.', 'gate.s2': 'This is a static page. Handbook, notes, transcripts and API key live only in this browser\'s local storage; nothing passes through a server. When you run a module, the browser sends the protocol + taxonomy + your input directly to the model endpoint you configured, with no third party in between. Clearing browser data erases everything, so export your handbook regularly.',
     'gate.s3t': 'Precondition.', 'gate.s3': 'This is not a shortcut: the JD and your résumé are both required, the notes are yours to write, the blanks are yours to fill. It only works for people willing to be honest with themselves: the tool cannot stop you from writing notes that flatter you, and each judgement is only as good as your notes. Covers one candidate, experienced hire or campus; group interviews are not covered. The web page is the zero-setup trial; the Claude Code skill is the full version (local transcription, automatic handbook write-back).',
     'gate.ok': 'I have read this. I know the data stays local and I know the precondition.', 'gate.go': 'Enter',
@@ -195,41 +197,8 @@ async function readSSE(r, onEvent) {
   }
 }
 
-/* ---------- Markdown 最小渲染 ---------- */
-const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-function inline(s) {
-  s = esc(s);
-  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
-  s = s.replace(/\*\*([^*]+)\*\*/g, '<b>$1</b>');
-  s = s.replace(/(【空位·思考漏洞】|【Blank · Thinking Gap】)/g, '<span class="gap">$1</span>');
-  return s;
-}
-function md2html(md) {
-  const L = md.replace(/\r/g, '').split('\n'); const out = []; let i = 0;
-  const isTableSep = (l) => /^\s*\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?\s*$/.test(l);
-  while (i < L.length) {
-    let l = L[i];
-    if (/^```/.test(l)) { const b = []; i++; while (i < L.length && !/^```/.test(L[i])) b.push(L[i++]); i++; out.push('<pre>' + esc(b.join('\n')) + '</pre>'); continue; }
-    const h = /^(#{1,6})\s+(.*)$/.exec(l);
-    if (h) { out.push(`<h${h[1].length}>${inline(h[2])}</h${h[1].length}>`); i++; continue; }
-    if (/^\s*(-{3,}|\*{3,})\s*$/.test(l)) { out.push('<hr>'); i++; continue; }
-    if (/^\s*\|/.test(l) && i + 1 < L.length && isTableSep(L[i + 1])) {
-      const cells = (r) => r.trim().replace(/^\||\|$/g, '').split('|').map((c) => inline(c.trim()));
-      const head = cells(l); i += 2; const rows = [];
-      while (i < L.length && /^\s*\|/.test(L[i])) rows.push(cells(L[i++]));
-      out.push('<table><thead><tr>' + head.map((c) => `<th>${c}</th>`).join('') + '</tr></thead><tbody>' + rows.map((r) => '<tr>' + r.map((c) => `<td>${c}</td>`).join('') + '</tr>').join('') + '</tbody></table>');
-      continue;
-    }
-    if (/^\s*>/.test(l)) { const b = []; while (i < L.length && /^\s*>/.test(L[i])) b.push(L[i++].replace(/^\s*>\s?/, '')); out.push('<blockquote>' + inline(b.join(' ')) + '</blockquote>'); continue; }
-    const li = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/.exec(l);
-    if (li) { const ol = /\d/.test(li[2]); const items = []; while (i < L.length) { const m = /^(\s*)([-*+]|\d+[.)])\s+(.*)$/.exec(L[i]); if (!m) break; items.push(`<li>${inline(m[3])}</li>`); i++; } out.push(`<${ol ? 'ol' : 'ul'}>${items.join('')}</${ol ? 'ol' : 'ul'}>`); continue; }
-    if (!l.trim()) { i++; continue; }
-    const p = []; while (i < L.length && L[i].trim() && !/^(#{1,6}\s|```|\s*\||\s*>|\s*([-*+]|\d+[.)])\s)/.test(L[i])) p.push(L[i++]);
-    if (!p.length) { p.push(l); i++; }
-    out.push('<p>' + inline(p.join('\n')).replace(/\n/g, '<br>') + '</p>');
-  }
-  return out.join('\n');
-}
+/* ---------- Markdown 渲染（见 md.js） ---------- */
+const { esc, md2html } = window.ILmd;
 function extractIncrements(md) {
   const L = md.replace(/\r/g, '').split('\n'); const parts = []; let cur = null;
   for (const l of L) {
@@ -373,6 +342,8 @@ function init() {
   switchTab(LS.get('tab', 'about'));
   // about
   $('#ab-go').onclick = () => switchTab('A');
+  $('#ab-demo').onclick = () => { location.href = 'demo.html'; };
+  $('#ab-prompt').onclick = () => { window.open('../PROMPT.zh.md', '_blank'); };
   $('#ab-gate').onclick = () => { $('#gate-ok').checked = false; $('#gate-go').disabled = true; $('#gate').hidden = false; $('#app').hidden = true; window.scrollTo(0, 0); };
   // handbook
   $('#hb').value = LS.get('hb', '');
@@ -413,6 +384,8 @@ function init() {
   // settings
   const s = settings();
   $('#s-provider').value = s.provider; $('#s-model').value = s.model; $('#s-url').value = s.url; $('#s-omodel').value = s.omodel; $('#s-key').value = s.key; $('#s-effort').value = s.effort; $('#s-fallback').checked = !!s.fallback;
+  const PRESETS = { deepseek: ['https://api.deepseek.com/v1', 'deepseek-v4-flash'], kimi: ['https://api.moonshot.cn/v1', 'kimi-k2.6'], qwen: ['https://dashscope.aliyuncs.com/compatible-mode/v1', 'qwen-plus'], doubao: ['https://ark.cn-beijing.volces.com/api/v3', 'doubao-seed-1-6-251015'], glm: ['https://open.bigmodel.cn/api/paas/v4', 'glm-4.6'], openai: ['https://api.openai.com/v1', ''] };
+  $('#s-preset').onchange = (e) => { const v = PRESETS[e.target.value]; if (!v) return; $('#s-url').value = v[0]; $('#s-omodel').placeholder = v[1] ? (lang === 'zh' ? '示例：' : 'e.g. ') + v[1] : ''; if (!$('#s-omodel').value) $('#s-omodel').value = v[1]; persist(); };
   const syncProv = () => { const p = $('#s-provider').value; $('#s-anthropic-opts').hidden = p !== 'anthropic'; $('#s-anthropic-more').hidden = p !== 'anthropic'; $('#s-openai-opts').hidden = p !== 'openai'; };
   syncProv();
   const persist = () => { saveSettings({ provider: $('#s-provider').value, model: $('#s-model').value, url: $('#s-url').value, omodel: $('#s-omodel').value, key: $('#s-key').value.trim(), effort: $('#s-effort').value, fallback: $('#s-fallback').checked }); syncProv(); flash($('#s-status'), t('saved')); usage(); };

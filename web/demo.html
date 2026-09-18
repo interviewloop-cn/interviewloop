@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>InterviewLoop · 一场完整示例</title>
+<meta name="theme-color" content="#1f2a44">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+<style>
+.demo-hero{max-width:1100px;margin:0 auto;padding:20px 16px 0}
+.demo-hero h2{margin:0 0 6px;font-size:20px}
+.demo-hero p{margin:4px 0;color:var(--muted)}
+.pill{display:inline-block;background:var(--warn-bg);color:var(--warn);border-radius:999px;padding:2px 10px;font-size:12px;margin-right:6px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div><h1>InterviewLoop</h1><div class="sub">一场面试跑完是什么样 · A complete sample run</div></div>
+  <div class="spacer"></div>
+  <button class="sec" onclick="location.href='index.html'">回到工具 / Back to the tool</button>
+</header>
+<div class="demo-hero">
+  <h2>候选人 L 的第六场面试：面前预演 → 面后笔记 → 面后复盘 → 结果回填</h2>
+  <p><span class="pill">全部虚构</span>候选人、公司、数字均为示范；行业行话与数量级按公开资料校准。不需要 API key，这一页只是把仓库里的示例文件渲染出来。</p>
+  <p>先看"结论卡"：这是每场复盘固定的五行。再看其他标签，是它背后的全部证据。</p>
+</div>
+<nav class="tabs" id="tabs"></nav>
+<main><div class="card"><div class="out" id="out">加载中…</div></div></main>
+<script src="md.js"></script>
+<script>
+(async () => {
+  const { md2html } = window.ILmd;
+  const [loop, hb] = await Promise.all([fetch('../example/loop-sample.md').then(r => r.text()), fetch('../example/handbook-sample.md').then(r => r.text())]);
+  const parts = loop.split(/\n(?=# 第[一二三四五]部分)/);
+  const pick = (kw) => parts.find(p => p.startsWith('# ') && p.split('\n')[0].includes(kw)) || '';
+  const b = pick('第四部分');
+  const card = (b.match(/## 第一段 · 结论卡[\s\S]*?(?=\n## 第二段)/) || [''])[0];
+  const tabs = [
+    ['结论卡', '# 面后复盘的结论卡（固定五行）\n\n' + card.replace('## 第一段 · 结论卡', '') + '\n\n> 类型判定来自面试官的行为；结果预测只是让你先写下判断，之后由真实结果来检验；"最需处理的 3 条"只给骨架编号和一行结构，不给答案全文；"未出现的劣势"是进步。'],
+    ['A · 面前预演', pick('第一部分') + '\n\n' + pick('第二部分')],
+    ['面后笔记', pick('第三部分')],
+    ['B · 面后复盘', b],
+    ['C · 结果回填', pick('第五部分')],
+    ['六场之后的手册', hb],
+  ];
+  const nav = document.getElementById('tabs'), out = document.getElementById('out');
+  tabs.forEach(([name, md], i) => {
+    const btn = document.createElement('button'); btn.textContent = name; if (i === 0) btn.className = 'on';
+    btn.onclick = () => { [...nav.children].forEach(x => x.classList.remove('on')); btn.classList.add('on'); out.innerHTML = md2html(md); window.scrollTo(0, 0); };
+    nav.appendChild(btn);
+  });
+  out.innerHTML = md2html(tabs[0][1]);
+})().catch((e) => { document.getElementById('out').textContent = '示例加载失败：' + e.message; });
+</script>
+</body>
+</html>
