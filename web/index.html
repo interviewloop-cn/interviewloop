@@ -13,7 +13,7 @@
 <body>
 
 <header class="top">
-  <div><h1>InterviewLoop</h1><div class="sub" data-i18n="subtitle">社招候选人自训练系统 · v0</div></div>
+  <div><h1>InterviewLoop</h1><div class="sub" data-i18n="subtitle">面试候选人自训练系统 · v1.0</div></div>
   <div class="spacer"></div>
   <select id="lang" title="Language"><option value="zh">中文</option><option value="en">English</option></select>
   <select id="market" title="Market package" disabled><option value="cn">market: cn</option></select>
@@ -36,7 +36,8 @@
 
 <div id="app" hidden>
 <nav class="tabs" id="tabs">
-  <button data-tab="handbook" class="on" data-i18n="tab.hb">手册</button>
+  <button data-tab="about" class="on" data-i18n="tab.about">关于</button>
+  <button data-tab="handbook" data-i18n="tab.hb">手册</button>
   <button data-tab="A" data-i18n="tab.a">A · 面前预演</button>
   <button data-tab="B" data-i18n="tab.b">B · 面后复盘</button>
   <button data-tab="C" data-i18n="tab.c">C · 结果回填</button>
@@ -46,8 +47,34 @@
 
 <main>
 
+<!-- 关于 -->
+<section class="panel on" id="p-about">
+  <div class="card">
+    <h2 data-i18n="ab.h">用 AI 训练你，不是用 AI 面试你</h2>
+    <p data-i18n="ab.p1">市面上的 AI 面试工具大多在替你做事：面试中实时提词，或者扮演面试官给你打分。它们都不会增加你自己的思考。InterviewLoop 反过来：AI 只负责把结构、证据和空位摆到你面前，想和答都由你完成。</p>
+    <h3 data-i18n="ab.h2">它训练你的三样东西</h3>
+    <ul>
+      <li data-i18n="ab.t1">应答结构：十个回答骨架（判断 + 依据 + 反悔条件、受控示弱、案例题前置检索……），只给结构和一句参考句，不给答案全文。</li>
+      <li data-i18n="ab.t2">对岗位和行业的认知：把 JD 逐条对上你的证据，缺口和错位摆在投递之前；看清这个岗位到底在买什么，你和它是否匹配。</li>
+      <li data-i18n="ab.t3">对自己的判断：每场面后先填信号表再预测结果，真实结果回来后给预测打分；预测错了，错在哪个信号，写回你的手册。</li>
+    </ul>
+    <h3 data-i18n="ab.h3">你会得到什么</h3>
+    <p data-i18n="ab.p3">一本只属于你的手册：哪些失分模式在你身上反复出现、哪些通过信号在你身上真的灵、哪句口径两场说得不一样。面到第三场，你自己看不见的规律就会显出来。这一轮没过也没关系，样本在长；把反复失分的那个位置改掉的人，最后都拿到了工作。</p>
+    <h3 data-i18n="ab.h4">它不做什么</h3>
+    <p data-i18n="ab.p4">不替你答题，不扮演面试官，不写话术全文，不评分，不预测通过率，不评价面试官和公司。只有你能填的位置一律留空，打上【空位·思考漏洞】：空位是训练点，不是功能缺失。</p>
+    <h3 data-i18n="ab.h5">怎么开始</h3>
+    <ol>
+      <li data-i18n="ab.s1">面试前：到"A · 面前预演"，贴 JD 和简历要点（两者都必填），拿到错位拦截、QA 预案和带标记的自介半成品。</li>
+      <li data-i18n="ab.s2">面试后：到"B · 面后复盘"，填笔记（填不全也行，模型只问缺的），拿到类型判定、失分模式、信号表和预测。</li>
+      <li data-i18n="ab.s3">结果出来：到"C · 结果回填"，一行字写回手册；预测错了就多一条校准记录。</li>
+    </ol>
+    <p class="hint" data-i18n="ab.p5">你的笔记、手册和 key 只存在这个浏览器里，不经过任何服务器。本页是零门槛试用；完整版是 Claude Code skill（本地转录录音、从转录生成笔记草稿、自动写回手册）：npx skills add interviewloop-cn/interviewloop</p>
+    <div class="btns"><button id="ab-go" class="pri" data-i18n="ab.go">从模块 A 开始</button><button id="ab-gate" class="sec" data-i18n="ab.gate">重看三步说明</button></div>
+  </div>
+</section>
+
 <!-- 手册 -->
-<section class="panel on" id="p-handbook">
+<section class="panel" id="p-handbook">
   <div class="card">
     <h2 data-i18n="hb.title">个人手册（只存在本浏览器）</h2>
     <p class="hint" data-i18n="hb.hint">模板来自 templates/handbook.md。跑完 B 或 C 后，把下面"待合并的手册增量"手动合并进来。自动保存。</p>

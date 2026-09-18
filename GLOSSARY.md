@@ -8,10 +8,10 @@
 
 | 中文 | English | 备注 |
 |---|---|---|
-| InterviewLoop · 社招候选人自训练系统 | InterviewLoop · Self-Training System for Experienced-Hire Candidates | 项目名 |
+| InterviewLoop · 面试候选人自训练系统 | InterviewLoop · Self-Training System for Interview Candidates | 项目名 |
 | 社招 | experienced hire | |
 | 校招 | campus recruiting | |
-| 社招（一位候选人，面试官一人或多人） | experienced-hire interview (one candidate, one or more interviewers) | v0 边界 |
+| 一位候选人（不分社招 / 校招），面试官一人或多人 | one candidate (experienced hire or campus), one or more interviewers | v1.0 边界 |
 | 闭环 | the loop | |
 | 模块 A · 面前预演 | Module A · Pre-interview Rehearsal | |
 | 模块 B · 面后复盘 | Module B · Post-interview Review | |

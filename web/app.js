@@ -1,4 +1,4 @@
-/* InterviewLoop web client · v0
+/* InterviewLoop web client · v1.0
    纯静态、BYOK、全部数据只在 localStorage。除用户主动触发的模型 / 语音请求外不发任何网络请求。 */
 (() => {
 'use strict';
@@ -14,9 +14,9 @@ const LS = {
 /* ---------- i18n ---------- */
 const T = {
   zh: {
-    subtitle: '社招候选人自训练系统 · v0', install: '安装到桌面',
+    subtitle: '面试候选人自训练系统 · v1.0', install: '安装到桌面',
     privacy: '你的笔记、手册和 key 不经过任何服务器。所有内容只存在这个浏览器里；导出即备份。',
-    'tab.hb': '手册', 'tab.a': 'A · 面前预演', 'tab.b': 'B · 面后复盘', 'tab.c': 'C · 结果回填', 'tab.t': '转录', 'tab.s': '设置',
+    'tab.about': '关于', 'tab.hb': '手册', 'tab.a': 'A · 面前预演', 'tab.b': 'B · 面后复盘', 'tab.c': 'C · 结果回填', 'tab.t': '转录', 'tab.s': '设置',
     copy: '复制', download: '下载 .md', raw: '切换原文/渲染', stop: '停止', usehb: '附带个人手册',
     run: '运行模块 A', 'run.b': '运行模块 B', 'run.c': '运行模块 C',
     copied: '已复制', saved: '已保存', nokey: '先到"设置"填 API key', nojd: 'JD 与简历要点必填', nonotes: '面后笔记必填',
@@ -31,9 +31,9 @@ const T = {
     tsent: '已填入模块 B 的转录框', micdenied: '无法访问麦克风：',
   },
   en: {
-    subtitle: 'Self-Training System for Experienced-Hire Candidates · v0', install: 'Install as app',
+    subtitle: 'Self-Training System for Interview Candidates · v1.0', install: 'Install as app',
     privacy: 'Your notes, handbook and key never pass through a server. Everything lives only in this browser; export is your backup.',
-    'tab.hb': 'Handbook', 'tab.a': 'A · Pre-interview Rehearsal', 'tab.b': 'B · Post-interview Review', 'tab.c': 'C · Outcome Backfill', 'tab.t': 'Transcribe', 'tab.s': 'Settings',
+    'tab.about': 'About', 'tab.hb': 'Handbook', 'tab.a': 'A · Pre-interview Rehearsal', 'tab.b': 'B · Post-interview Review', 'tab.c': 'C · Outcome Backfill', 'tab.t': 'Transcribe', 'tab.s': 'Settings',
     copy: 'Copy', download: 'Download .md', raw: 'Toggle raw/rendered', stop: 'Stop', usehb: 'Attach personal handbook',
     run: 'Run Module A', 'run.b': 'Run Module B', 'run.c': 'Run Module C',
     copied: 'Copied', saved: 'Saved', nokey: 'Add an API key under Settings first', nojd: 'JD and résumé points are required', nonotes: 'Post-interview notes are required',
@@ -47,6 +47,22 @@ const T = {
     tload: 'Loading local model (downloads once, then works offline)…', trun: 'Transcribing…', tdone: 'Transcription done', tfail: 'Transcription failed: ',
     tsent: 'Sent to Module B transcript box', micdenied: 'Microphone unavailable: ',
     // static UI
+    'ab.h': 'AI that trains you, not AI that interviews you',
+    'ab.p1': 'Most AI interview tools do the work for you: they feed you lines during the interview, or play interviewer and score you. Neither adds anything to your own thinking. InterviewLoop does the opposite: the AI only lays out structure, evidence and blanks; the thinking and the answering are yours.',
+    'ab.h2': 'Three things it trains',
+    'ab.t1': 'Answer structure: ten answer skeletons (judgement + basis + reversal condition, controlled concession, pre-case retrieval…). It gives structure and one reference sentence, never a full answer.',
+    'ab.t2': 'Your understanding of the role and the industry: every JD line is mapped to your evidence, and gaps and mismatches are shown before you apply, so you see what the role is really buying and whether you fit.',
+    'ab.t3': 'Your judgement of yourself: after each interview you fill the signal table first, then predict the outcome; when the real result arrives the prediction is scored, and which signal was wrong goes back into your handbook.',
+    'ab.h3': 'What you get',
+    'ab.p3': 'A handbook that is only yours: which pitfalls keep recurring in you, which pass signals actually hold for you, which claim you stated differently in two interviews. By the third interview the pattern you cannot see yourself becomes visible. A failed round still grows the sample; people who fix the spot that keeps costing them end up hired.',
+    'ab.h4': 'What it does not do',
+    'ab.p4': 'It does not answer for you, play interviewer, write full scripts, score you, predict a pass rate, or evaluate interviewers and companies. Every place only you can fill is left blank and marked 【Blank · Thinking Gap】: a blank is a training point, not a missing feature.',
+    'ab.h5': 'How to start',
+    'ab.s1': 'Before an interview: open "A · Pre-interview Rehearsal", paste the JD and your résumé points (both required), and get the mismatch intercept, the QA plan and a tagged self-intro draft.',
+    'ab.s2': 'After an interview: open "B · Post-interview Review" and fill in the notes (incomplete is fine; the model asks only for what is missing) to get the type judgement, pitfalls, signal table and prediction.',
+    'ab.s3': 'When the result arrives: open "C · Outcome Backfill"; one line goes back into the handbook, plus a calibration record if the prediction was wrong.',
+    'ab.p5': 'Your notes, handbook and key live only in this browser and never pass through a server. This page is the zero-setup trial; the full version is the Claude Code skill (local transcription, notes drafted from the transcript, automatic handbook write-back): npx skills add interviewloop-cn/interviewloop',
+    'ab.go': 'Start with Module A', 'ab.gate': 'Re-read the three steps',
     'gate.title': 'Three things before you start', 'gate.s1t': 'What this is.', 'gate.s1': 'AI that trains you, not AI that interviews you. It does not answer for you; it trains the structure of your answers and your understanding of the role and industry. Three modules: Pre-interview Rehearsal (A) → interview → Post-interview Review (B) → Outcome Backfill (C) → your handbook grows one row → next A. Every prediction is scored against the real outcome and the correction goes back into your handbook; even a failed round grows the sample.',
     'gate.s2t': 'Where your data is.', 'gate.s2': 'This is a static page. Handbook, notes, transcripts and API key live only in this browser\'s local storage; nothing passes through a server. When you run a module, the browser sends the protocol + taxonomy + your input directly to the model endpoint you configured, with no third party in between. Clearing browser data erases everything, so export your handbook regularly.',
     'gate.s3t': 'Precondition.', 'gate.s3': 'This is not a shortcut: the JD and your résumé are both required, the notes are yours to write, the blanks are yours to fill. It only works for people willing to be honest with themselves: the tool cannot stop you from writing notes that flatter you, and each judgement is only as good as your notes. Covers one candidate, experienced hire or campus; group interviews are not covered. The web page is the zero-setup trial; the Claude Code skill is the full version (local transcription, automatic handbook write-back).',
@@ -354,7 +370,10 @@ function init() {
   $('#lang').onchange = (e) => { lang = e.target.value; LS.set('lang', lang); applyLang(); usage(); };
   // tabs
   $$('#tabs button').forEach((b) => (b.onclick = () => switchTab(b.dataset.tab)));
-  switchTab(LS.get('tab', 'handbook'));
+  switchTab(LS.get('tab', 'about'));
+  // about
+  $('#ab-go').onclick = () => switchTab('A');
+  $('#ab-gate').onclick = () => { $('#gate-ok').checked = false; $('#gate-go').disabled = true; $('#gate').hidden = false; $('#app').hidden = true; window.scrollTo(0, 0); };
   // handbook
   $('#hb').value = LS.get('hb', '');
   $('#hb').oninput = () => { LS.set('hb', $('#hb').value); flash($('#hb-status'), t('saved')); };
