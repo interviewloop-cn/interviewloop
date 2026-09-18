@@ -25,7 +25,7 @@
 <section id="gate" class="gate card" hidden>
   <h2 data-i18n="gate.title">用之前，先看三步</h2>
   <ol>
-    <li><b data-i18n="gate.s1t">这是什么。</b> <span data-i18n="gate.s1">用 AI 训练你，不是用 AI 面试你。它不替你答题，训练的是你的应答结构和你对岗位、行业的认知。三个模块：面前预演（A）→ 面试 → 面后复盘（B）→ 结果回填（C）→ 手册长一行 → 下一次 A。每次预测都会被真实结果打分，纠正写回你的手册；这轮没过，样本也在长。</span>
+    <li><b data-i18n="gate.s1t">这是什么。</b> <span data-i18n="gate.s1">用 AI 训练你，不是用 AI 面试你。它不替你答题，训练的是你的应答结构和你对岗位、行业的认知。三个模块：面前预演（A）→ 面试 → 面后复盘（B）→ 结果回填（C）→ 手册长一行 → 下一次 A。先写下判断，再被真实结果检验，纠正写回你的手册；这轮没过，样本也在长。</span>
       <pre>A 面前预演 → 面试 → B 面后复盘 → C 结果回填 → 手册更新 → 下一次 A</pre></li>
     <li><b data-i18n="gate.s2t">数据在哪。</b> <span data-i18n="gate.s2">本页是纯静态页。手册、笔记、转录、API key 全部只存在这个浏览器的本地存储里，不经过任何服务器。跑模块时，浏览器直接把协议 + 分类库 + 你的输入发给你自己填的模型接口，不经过第三方。清浏览器数据 = 清空一切，所以请定期导出手册。</span></li>
     <li><b data-i18n="gate.s3t">前提。</b> <span data-i18n="gate.s3">这不是捷径：JD 和简历都必须给，笔记要你自己写，空位要你自己填。只对愿意对自己诚实的人有用：工具无法防止你给自己写有利的笔记，它的每条判断只和你的笔记一样好。覆盖一位候选人的面试，不分社招校招；群面不覆盖。网页是零门槛试用，Claude Code skill 才是完整版（本地转录、手册自动写回）。</span></li>
@@ -56,10 +56,10 @@
     <ul>
       <li data-i18n="ab.t1">应答结构：十个回答骨架（判断 + 依据 + 反悔条件、受控示弱、案例题前置检索……），只给结构和一句参考句，不给答案全文。</li>
       <li data-i18n="ab.t2">对岗位和行业的认知：把 JD 逐条对上你的证据，缺口和错位摆在投递之前；看清这个岗位到底在买什么，你和它是否匹配。</li>
-      <li data-i18n="ab.t3">对自己的判断：每场面后先填信号表再预测结果，真实结果回来后给预测打分；预测错了，错在哪个信号，写回你的手册。</li>
+      <li data-i18n="ab.t3">对自己的判断：每场面后，在知道结果之前先写下你对这场的判断。目的不是算得准，而是逼你先下判断、再被结果检验，慢慢知道自己对现场的哪些感觉靠得住。</li>
     </ul>
     <h3 data-i18n="ab.h3">你会得到什么</h3>
-    <p data-i18n="ab.p3">一本只属于你的手册：哪些失分模式在你身上反复出现、哪些通过信号在你身上真的灵、哪句口径两场说得不一样。面到第三场，你自己看不见的规律就会显出来。这一轮没过也没关系，样本在长；把反复失分的那个位置改掉的人，最后都拿到了工作。</p>
+    <p data-i18n="ab.p3">一本只属于你的手册：哪些失分模式在你身上反复出现、哪些通过信号在你身上真的灵、哪句口径两场说得不一样。面到第三场，你自己看不见的规律就会显出来：作者用自己三场真实面试试跑，同一个失分模式三场全中，凭感觉复盘时完全没发现。这一轮没过也没关系，样本在长。</p>
     <h3 data-i18n="ab.h4">它不做什么</h3>
     <p data-i18n="ab.p4">不替你答题，不扮演面试官，不写话术全文，不评分，不预测通过率，不评价面试官和公司。只有你能填的位置一律留空，打上【空位·思考漏洞】：空位是训练点，不是功能缺失。</p>
     <h3 data-i18n="ab.h5">怎么开始</h3>
@@ -69,7 +69,7 @@
       <li data-i18n="ab.s3">结果出来：到"C · 结果回填"，一行字写回手册；预测错了就多一条校准记录。</li>
     </ol>
     <p class="hint" data-i18n="ab.p5">你的笔记、手册和 key 只存在这个浏览器里，不经过任何服务器。本页是零门槛试用；完整版是 Claude Code skill（本地转录录音、从转录生成笔记草稿、自动写回手册）：npx skills add interviewloop-cn/interviewloop</p>
-    <div class="btns"><button id="ab-go" class="pri" data-i18n="ab.go">从模块 A 开始</button><button id="ab-gate" class="sec" data-i18n="ab.gate">重看三步说明</button></div>
+    <div class="btns"><button id="ab-demo" class="pri" data-i18n="ab.demo">看一场完整示例（不需要 key）</button><button id="ab-go" class="sec" data-i18n="ab.go">从模块 A 开始</button><button id="ab-prompt" class="sec" data-i18n="ab.prompt">零安装：拿单文件提示词</button><button id="ab-gate" class="sec" data-i18n="ab.gate">重看三步说明</button></div>
   </div>
 </section>
 
@@ -193,7 +193,7 @@
   <div class="card">
     <h2 data-i18n="s.title">模型与 key（只存本浏览器）</h2>
     <div class="row">
-      <div><label class="f" data-i18n="s.provider">接口</label><select id="s-provider"><option value="anthropic">Anthropic（Claude）</option><option value="openai">OpenAI 兼容接口</option></select></div>
+      <div><label class="f" data-i18n="s.provider">接口</label><select id="s-provider"><option value="anthropic">Anthropic（Claude）</option><option value="openai">OpenAI 兼容接口（DeepSeek / Kimi / 通义千问 / 豆包 / 智谱 / OpenAI）</option></select></div>
       <div id="s-anthropic-opts"><label class="f" data-i18n="s.model">模型</label><select id="s-model">
         <option value="claude-opus-5">claude-opus-5（默认）</option>
         <option value="claude-sonnet-5">claude-sonnet-5</option>
@@ -201,6 +201,8 @@
         <option value="claude-haiku-4-5">claude-haiku-4-5</option>
       </select></div>
       <div id="s-openai-opts" hidden>
+        <label class="f" data-i18n="s.preset">预设（自动填接口地址）</label><select id="s-preset"><option value="">—</option><option value="deepseek">DeepSeek</option><option value="kimi">Kimi（月之暗面）</option><option value="qwen">通义千问（阿里云百炼）</option><option value="doubao">豆包（火山方舟）</option><option value="glm">智谱 GLM</option><option value="openai">OpenAI</option></select>
+        <p class="hint" data-i18n="s.presetnote">DeepSeek、Kimi、通义千问、豆包、智谱、OpenAI 都允许浏览器直接调用（2026-09 实测）。模型名更新很快，请到对应平台控制台复制当前可用的模型名，示例可能已过期。</p>
         <label class="f" data-i18n="s.url">Base URL</label><input type="text" id="s-url" placeholder="https://api.openai.com/v1">
         <label class="f" data-i18n="s.omodel">模型名</label><input type="text" id="s-omodel" placeholder="gpt-…">
       </div>
@@ -227,6 +229,7 @@
 </main>
 </div>
 
+<script src="md.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

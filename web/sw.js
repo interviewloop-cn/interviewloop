@@ -2,11 +2,12 @@
    - 预缓存应用外壳 + 协议 + 分类库 + 模板，断网可用
    - 只拦截同源 GET，网络优先、断网回退缓存；用户主动触发的模型 / 语音 API 请求（跨域）一律不经过本 worker
    - 除预缓存外不发起任何网络请求 */
-const VERSION = 'il-v1.0.2';
+const VERSION = 'il-v1.1.0';
 const SHELL = [
-  './', './index.html', './app.js', './style.css', './manifest.webmanifest',
+  './', './index.html', './demo.html', './app.js', './md.js', './style.css', './manifest.webmanifest',
   './icon.svg', './icon-192.png', './icon-512.png',
-  '../PROTOCOL.md', '../PROTOCOL.en.md', '../GLOSSARY.md',
+  '../PROTOCOL.md', '../PROTOCOL.en.md', '../GLOSSARY.md', '../PROMPT.zh.md',
+  '../example/loop-sample.md', '../example/handbook-sample.md',
   '../taxonomy/cn/interviewer-types.md', '../taxonomy/cn/skeletons.md', '../taxonomy/cn/signals.md',
   '../taxonomy/cn/pitfalls.md', '../taxonomy/cn/stages.md',
   '../taxonomy/en/interviewer-types.md', '../taxonomy/en/skeletons.md', '../taxonomy/en/signals.md',

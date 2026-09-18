@@ -4,6 +4,10 @@
 
 > 中文是唯一主版本，英文由中文生成（协议 v0.4），两者不一致时以中文为准。
 
+[![一场面试复盘的结论卡（虚构样本）](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
+
+**三十秒看懂**：[看一场完整示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html)（不用 key）｜[打开网页版](https://interviewloop-cn.github.io/interviewloop/web/)｜[零安装：单文件提示词](PROMPT.zh.md)（上传到 Kimi、DeepSeek、豆包就能跑）
+
 ## 这是什么
 
 **InterviewLoop 用 AI 训练你，不是用 AI 面试你。** 它不替你答题，也不扮演面试官。它训练的是你的应答结构，和你对岗位、对行业的进一步认知，一场真实面试一场地练，让你和下一份工作更匹配。每一次面试都变成可积累的训练样本；样本是你的，不离开你的机器。
@@ -18,9 +22,9 @@
 模块 A  下一次
 ```
 
-三步闭环。你的个人手册（劣势追踪表、校准记录、信号命中）跟着你一场一场长。工具的每一次预测都会被真实结果打分，纠正写回你的手册。工具不替你填只有你能填的东西：那些位置留空，打上 `【空位·思考漏洞】`。空位是训练点，不是功能缺失。
+三步闭环。你的个人手册（劣势追踪表、校准记录、信号命中）跟着你一场一场长。每场面后，你先写下对这场的判断，再等真实结果来检验，判断错在哪写回手册。这一步不是为了算得准，是为了逼你先下判断、再对答案。工具不替你填只有你能填的东西：那些位置留空，打上 `【空位·思考漏洞】`。空位是训练点，不是功能缺失。
 
-这一轮没过也没关系，样本在长。自己的面试记够了，反复让你失分的那个位置就会显出来，把它改掉的人最后都拿到了工作。
+这一轮没过也没关系，样本在长。作者用自己三场真实面试试跑：同一个失分模式三场全中，凭感觉复盘时完全没发现；三场里工具的预测错了一场，错的那条也记进了校准记录。它的价值不在预测准，在强迫你做有结构的复盘。
 
 ## 用之前先看这三条
 
@@ -34,7 +38,14 @@
 
 ## 怎么用
 
-产品本体是一份 markdown 协议，任何大模型都能跑。Claude Code skill 是主要用法（它替你读写手册）；网页是零门槛试用。
+产品本体是一份 markdown 协议。四种用法，从轻到重：
+
+| 用法 | 要准备什么 | 适合谁 |
+|---|---|---|
+| [看示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html) | 什么都不用 | 想先知道它输出什么 |
+| [单文件提示词](PROMPT.zh.md) | 一个你常用的大模型聊天应用 | 不想装东西、没有 API key。把文件上传到 Kimi、DeepSeek、豆包、通义千问、智谱、ChatGPT 或 Claude，发一句"运行模块 A"加 JD 和简历 |
+| [网页版](https://interviewloop-cn.github.io/interviewloop/web/) | 一个模型 API key | 想要本地保存手册、离线可用、导入导出 |
+| Claude Code skill | Claude Code | 想要录音本地转录、自动生成笔记草稿、自动写回手册 |
 
 **Claude Code skill（推荐）**
 
@@ -61,6 +72,20 @@ npx skills add interviewloop-cn/interviewloop
 
 `web/` 下的网页是协议的一个客户端：选模型接口、填你自己的 API key（只存浏览器）、跑三个模块。首次加载后断网可用；它发出的唯一网络请求，是你主动触发的、发往你自己模型或语音接口的那一次。
 
+### 网页版支持哪些模型
+
+| 接口 | 在设置里怎么选 | Base URL |
+|---|---|---|
+| Claude | Anthropic | 内置 |
+| DeepSeek | OpenAI 兼容接口 → 预设 DeepSeek | `https://api.deepseek.com/v1` |
+| Kimi（月之暗面） | 预设 Kimi | `https://api.moonshot.cn/v1` |
+| 通义千问（阿里云百炼） | 预设 通义千问 | `https://dashscope.aliyuncs.com/compatible-mode/v1` |
+| 豆包（火山方舟） | 预设 豆包 | `https://ark.cn-beijing.volces.com/api/v3` |
+| 智谱 GLM | 预设 智谱 | `https://open.bigmodel.cn/api/paas/v4` |
+| OpenAI 及其他兼容接口 | 预设 OpenAI 或手填 | 自填 |
+
+以上接口均允许浏览器直接调用（2026-09 逐个实测预检请求）。key 只存在你的浏览器里，请求从你的浏览器直达模型服务商。模型名更新很快，请到对应平台控制台复制当前可用的模型名。协议很长、规则很严，建议用各家当前最强的模型。
+
 ### 把网页安装成应用（PWA）三步
 
 1. 用浏览器打开：`https://interviewloop-cn.github.io/interviewloop/web/`（Chrome / Edge / Safari 均可）。仓库根目录会自动跳转。
@@ -85,7 +110,9 @@ taxonomy/cn/        面试官类型、骨架、信号、失分模式、业务阶
 taxonomy/en/        cn 的翻译，附 Cultural notes
 templates/zh|en/    个人手册、面后笔记、贡献模板
 example/            虚构候选人（骨科植入物临床市场），六场面试，一轮完整 A→B→C；SOURCES.md 列出行话与量级的公开校准来源
-web/                静态页 + PWA（index.html、app.js、sw.js、manifest）
+PROMPT.zh.md / PROMPT.en.md   零安装单文件提示词（由 scripts/build_prompt.py 生成）
+web/                静态页 + PWA（index.html、demo.html 示例页、app.js、md.js、sw.js、manifest）
+docs/               README 用图
 index.html          跳转到 web/
 LICENSE             CC BY-SA 4.0
 ROADMAP.md
@@ -103,6 +130,10 @@ ROADMAP.md
 
 # InterviewLoop · Self-Training System for Interview Candidates
 
+[![Verdict card of one interview review (fictional sample, in Chinese)](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
+
+**In thirty seconds**: [see a full sample run](https://interviewloop-cn.github.io/interviewloop/web/demo.html) (no key) ｜ [open the web app](https://interviewloop-cn.github.io/interviewloop/web/) ｜ [no install: the single-file prompt](PROMPT.en.md) (upload it to ChatGPT, Claude, DeepSeek or Kimi)
+
 > **Chinese is the canonical version**; the English section is generated from it (source: zh section, protocol v0.4, glossary v1). Where they differ, the Chinese text wins. All English terms follow `GLOSSARY.md`.
 
 ## What this is
@@ -119,9 +150,9 @@ Module C  Outcome backfill
 Module A  next interview
 ```
 
-Three steps close a loop. Your personal handbook (weakness tracker, calibration records, signal hit log) grows one interview at a time. Every prediction the tool makes is later scored against the real outcome, and the correction goes back into your handbook. The tool never fills in what only you can know: those places are left blank and marked `【空位·思考漏洞】` (Blank · Thinking Gap). A blank is a training point, not a missing feature.
+Three steps close a loop. Your personal handbook (weakness tracker, calibration records, signal hit log) grows one interview at a time. After each interview you write down your judgement before the result arrives, then check it; where the judgement was wrong goes back into your handbook. The point is not to forecast accurately but to make you commit and then check. The tool never fills in what only you can know: those places are left blank and marked `【空位·思考漏洞】` (Blank · Thinking Gap). A blank is a training point, not a missing feature.
 
-Even if this round fails, the sample grows. With enough of your own interviews on record, the pattern that keeps costing you becomes visible, and that is what gets you hired.
+Even if this round fails, the sample grows. In the author's own trial on three real interviews, one pitfall appeared in all three and had gone unnoticed in gut-feel review; the tool's prediction was wrong in one of the three, and that miss went into the calibration record too. Its value is not accurate prediction; it is forcing a structured review.
 
 ## Read this before you use it
 
@@ -135,7 +166,14 @@ Even if this round fails, the sample grows. With enough of your own interviews o
 
 ## How to use it
 
-The product is a markdown protocol. Any large language model can run it. The Claude Code skill is the primary way to use it (it reads and writes your handbook for you); the web page is the zero-setup way to try it.
+The product is a markdown protocol. Four ways to use it, lightest first:
+
+| Way | What you need | For whom |
+|---|---|---|
+| [See the sample](https://interviewloop-cn.github.io/interviewloop/web/demo.html) | nothing | you want to know what it outputs |
+| [Single-file prompt](PROMPT.en.md) | a chat app you already use | no install, no API key: upload the file to ChatGPT, Claude, DeepSeek, Kimi… and say "Run Module A" with the JD and your résumé |
+| [Web app](https://interviewloop-cn.github.io/interviewloop/web/) | one model API key | local handbook storage, offline, import and export. Works with Claude and any OpenAI-compatible endpoint: DeepSeek, Kimi, Qwen, Doubao, GLM and OpenAI all allow direct browser calls (verified 2026-09) |
+| Claude Code skill | Claude Code | local transcription of recordings, notes drafted from the transcript, automatic handbook write-back |
 
 **Claude Code skill (recommended)**
 
@@ -186,7 +224,9 @@ taxonomy/cn/        interviewer types, skeletons, signals, pitfalls, stages (mar
 taxonomy/en/        translation of cn/ with cultural notes
 templates/zh|en/    handbook, post-interview notes, contribution templates
 example/            a fictional candidate (orthopaedic-implant clinical marketing), six interviews, one full A→B→C run; SOURCES.md lists the public data the jargon and magnitudes are calibrated against
-web/                static page + PWA (index.html, app.js, sw.js, manifest)
+PROMPT.zh.md / PROMPT.en.md   no-install single-file prompt (generated by scripts/build_prompt.py)
+web/                static page + PWA (index.html, demo.html sample page, app.js, md.js, sw.js, manifest)
+docs/               images for the README
 index.html          redirects to web/
 LICENSE             CC BY-SA 4.0
 ROADMAP.md
