@@ -6,6 +6,8 @@
 
 [![一场面试复盘的结论卡（虚构样本）](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
 
+作者：[Cintia.H](https://github.com/cintiahuang123-ai)
+
 **三十秒看懂**：[看一场完整示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html)（不用 key）｜[打开网页版](https://interviewloop-cn.github.io/interviewloop/web/)｜[零安装：单文件提示词](PROMPT.zh.md)（上传到 Kimi、DeepSeek、豆包就能跑）
 
 ## 这是什么
@@ -141,6 +143,8 @@ ROADMAP.md
 # InterviewLoop · Self-Training System for Interview Candidates
 
 [![Verdict card of one interview review (fictional sample, in Chinese)](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
+
+Author: [Cintia.H](https://github.com/cintiahuang123-ai)
 
 **In thirty seconds**: [see a full sample run](https://interviewloop-cn.github.io/interviewloop/web/demo.html) (no key) ｜ [open the web app](https://interviewloop-cn.github.io/interviewloop/web/) ｜ [no install: the single-file prompt](PROMPT.en.md) (upload it to ChatGPT, Claude, DeepSeek or Kimi)
 
