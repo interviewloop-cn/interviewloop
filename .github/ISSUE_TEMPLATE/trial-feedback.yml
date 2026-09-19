@@ -1,0 +1,46 @@
+name: 试用反馈 · Trial feedback
+description: 你跑过一次（示例页、网页版、单文件提示词或 skill 都算），说说哪里有用、哪里卡住。You ran it once; tell us what helped and where it stalled.
+title: "[试用] "
+labels: ["feedback"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        请先脱敏：不写真实公司名、人名、真实业务数字。Please anonymise first: no real company names, personal names or business figures.
+  - type: dropdown
+    id: entry
+    attributes:
+      label: 你用的是哪个入口 · Which entry did you use
+      options:
+        - 示例页 demo（只看没跑）
+        - 网页版 PWA
+        - 单文件提示词 PROMPT（Kimi / DeepSeek / 豆包 / ChatGPT 等）
+        - Claude Code skill
+    validations:
+      required: true
+  - type: dropdown
+    id: module
+    attributes:
+      label: 跑了哪个模块 · Which module
+      multiple: true
+      options:
+        - A 面前预演
+        - B 面后复盘
+        - C 结果回填
+        - 只看了没跑
+  - type: textarea
+    id: stuck
+    attributes:
+      label: 哪一步卡住了，或想放弃 · Where did you stall or want to quit
+      description: 越具体越好：卡在哪个字段、哪句说明没看懂。
+    validations:
+      required: true
+  - type: textarea
+    id: useful
+    attributes:
+      label: 哪一条输出对你真的有用，哪一条是废话 · Which output helped, which was noise
+  - type: input
+    id: role
+    attributes:
+      label: 你的身份（选填）· Your role (optional)
+      placeholder: 候选人 / 面试官 / HR / 职业教练 / 开发者

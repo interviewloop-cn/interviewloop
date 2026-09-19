@@ -1,0 +1,32 @@
+name: 方法论质疑 · Challenge the method
+description: 你面过人、带过人或研究过面试，觉得协议里某条判断不成立。You have interviewed people and think a rule in the protocol does not hold.
+title: "[质疑] "
+labels: ["method"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        这类反馈最有价值。请先脱敏：不写真实公司名、人名。This is the most valuable kind of feedback. Please anonymise first.
+  - type: input
+    id: where
+    attributes:
+      label: 质疑的是哪一条 · Which rule
+      description: 文件与小节，例如 PROTOCOL.md B-2，或 taxonomy/cn/interviewer-types.md 的 C 型。
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: 为什么不成立 · Why it does not hold
+      description: 最好带一个你亲历的反例（脱敏后）。
+    validations:
+      required: true
+  - type: textarea
+    id: instead
+    attributes:
+      label: 你会怎么改 · What you would do instead
+  - type: input
+    id: basis
+    attributes:
+      label: 你的判断依据（选填）· Your basis (optional)
+      placeholder: 例如：面试官 5 年，社招为主，约 200 场

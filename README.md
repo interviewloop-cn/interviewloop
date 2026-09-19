@@ -118,6 +118,16 @@ LICENSE             CC BY-SA 4.0
 ROADMAP.md
 ```
 
+## 反馈
+
+最想听到三类意见，按价值排序：
+
+1. **方法论质疑**：你面过人，觉得某条判断不成立。[提一条质疑](https://github.com/interviewloop-cn/interviewloop/issues/new?template=method-challenge.yml)，最好带一个脱敏的反例。
+2. **试用反馈**：你跑过一次，哪一步卡住，哪条输出是废话。[写试用反馈](https://github.com/interviewloop-cn/interviewloop/issues/new?template=trial-feedback.yml)。
+3. **设计取舍**：比如"空位不让 AI 代填"值不值。去 [Discussions](https://github.com/interviewloop-cn/interviewloop/discussions) 聊。
+
+反馈不需要写代码，也不需要装任何东西：[示例页](https://interviewloop-cn.github.io/interviewloop/web/demo.html)三十秒看完就能提。
+
 ## 贡献
 
 只收 `taxonomy/` 的 PR，走 `templates/` 里的固定模板。禁公司名、人名、评价性语言。转录片段可以提交，但要去掉人名与公司名。模板字段本身就是脱敏边界。不承诺合并节奏。
@@ -231,6 +241,16 @@ index.html          redirects to web/
 LICENSE             CC BY-SA 4.0
 ROADMAP.md
 ```
+
+## Feedback
+
+Three kinds of input are wanted most, in order of value:
+
+1. **Challenge the method**: you have interviewed people and think a rule does not hold. [Open a challenge](https://github.com/interviewloop-cn/interviewloop/issues/new?template=method-challenge.yml), ideally with an anonymised counter-example.
+2. **Trial feedback**: you ran it once; where did you stall, which output was noise. [Write trial feedback](https://github.com/interviewloop-cn/interviewloop/issues/new?template=trial-feedback.yml).
+3. **Design trade-offs**: for example, whether refusing to let the AI fill the blanks is worth it. Talk in [Discussions](https://github.com/interviewloop-cn/interviewloop/discussions).
+
+Feedback needs no code and no install: the [sample run](https://interviewloop-cn.github.io/interviewloop/web/demo.html) takes thirty seconds.
 
 ## Contributing
 
