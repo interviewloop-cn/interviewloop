@@ -77,7 +77,7 @@
 <section class="panel" id="p-handbook">
   <div class="card">
     <h2 data-i18n="hb.title">个人手册（只存在本浏览器）</h2>
-    <p class="hint" data-i18n="hb.hint">模板来自 templates/handbook.md。跑完 B 或 C 后，把下面"待合并的手册增量"手动合并进来。自动保存。</p>
+    <p class="hint" data-i18n="hb.hint">模板来自 templates/handbook.md。跑完 B 或 C 后，下面会出现"待合并的手册增量"，点"追加到手册"即可写回末尾；想改措辞可先编辑手册再追加。自动保存。</p>
     <textarea id="hb" class="tall" spellcheck="false"></textarea>
     <div class="btns">
       <button id="hb-export" class="pri" data-i18n="hb.export">导出 handbook.md</button>
@@ -90,7 +90,7 @@
   <div class="card" id="hb-inc-card" hidden>
     <h2 data-i18n="hb.inc">待合并的手册增量（来自最近一次 B / C 输出）</h2>
     <div class="out" id="hb-inc"></div>
-    <div class="btns"><button id="hb-inc-copy" class="sec" data-i18n="copy">复制</button><button id="hb-inc-clear" class="sec" data-i18n="hb.incclear">已合并，清除</button></div>
+    <div class="btns"><button id="hb-inc-append" data-i18n="hb.incappend">追加到手册</button><button id="hb-inc-copy" class="sec" data-i18n="copy">复制</button><button id="hb-inc-clear" class="sec" data-i18n="hb.incclear">已手动合并，清除</button></div>
   </div>
 </section>
 
