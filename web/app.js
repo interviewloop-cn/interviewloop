@@ -23,7 +23,7 @@ const T = {
     nob: '没有模块 B 输出，先跑 B', noc: '先选一个结果', running: '运行中…', done: '完成', stopped: '已停止',
     taxmissing: '缺少分类库文件，无法运行', loadfail: '协议或分类库加载失败：', err: '错误：',
     refusal: '模型拒绝了本次请求（stop_reason: refusal）。可在设置里关闭服务端回退后重试，或换模型。',
-    'hb.confirmreset': '用空模板覆盖当前手册？此操作不可撤销，建议先导出。', 'hb.imported': '已导入',
+    'hb.confirmreset': '用空模板覆盖当前手册？此操作不可撤销，建议先导出。', 'hb.imported': '已导入', 'hb.appended': '已追加到手册末尾',
     wipeconfirm: '清除本浏览器里 InterviewLoop 的全部数据（手册、输入、输出、key）？', wiped: '已清除，页面将刷新',
     testing: '测试中…', testok: '连接正常：', 'a.hint2': 'A 输出已存，B 可引用。',
     'rec.start': '开始录音', 'rec.stop': '停止录音', recording: '录音中…', audioready: '音频就绪，可转录', noaudio: '先录音或导入音频',
@@ -40,7 +40,7 @@ const T = {
     nob: 'No Module B output yet; run B first', noc: 'Pick a result first', running: 'Running…', done: 'Done', stopped: 'Stopped',
     taxmissing: 'Taxonomy files missing; cannot run.', loadfail: 'Failed to load protocol or taxonomy: ', err: 'Error: ',
     refusal: 'The model declined this request (stop_reason: refusal). Try disabling server-side fallback in Settings, or switch model.',
-    'hb.confirmreset': 'Overwrite the current handbook with the empty template? This cannot be undone; export first.', 'hb.imported': 'Imported',
+    'hb.confirmreset': 'Overwrite the current handbook with the empty template? This cannot be undone; export first.', 'hb.imported': 'Imported', 'hb.appended': 'Appended to the end of the handbook',
     wipeconfirm: 'Erase all InterviewLoop data in this browser (handbook, inputs, outputs, key)?', wiped: 'Erased; the page will reload',
     testing: 'Testing…', testok: 'Connected: ', 'a.hint2': 'Module A output stored; Module B can reference it.',
     'rec.start': 'Start recording', 'rec.stop': 'Stop recording', recording: 'Recording…', audioready: 'Audio ready', noaudio: 'Record or import audio first',
@@ -69,8 +69,8 @@ const T = {
     'gate.s2t': 'Where your data is.', 'gate.s2': 'This is a static page. Handbook, notes, transcripts and API key live only in this browser\'s local storage; nothing passes through a server. When you run a module, the browser sends the protocol + taxonomy + your input directly to the model endpoint you configured, with no third party in between. Clearing browser data erases everything, so export your handbook regularly.',
     'gate.s3t': 'Precondition.', 'gate.s3': 'This is not a shortcut: the JD and your résumé are both required, the notes are yours to write, the blanks are yours to fill. It only works for people willing to be honest with themselves: the tool cannot stop you from writing notes that flatter you, and each judgement is only as good as your notes. Covers one candidate, experienced hire or campus; group interviews are not covered. The web page is the zero-setup trial; the Claude Code skill is the full version (local transcription, automatic handbook write-back).',
     'gate.ok': 'I have read this. I know the data stays local and I know the precondition.', 'gate.go': 'Enter',
-    'hb.title': 'Personal handbook (this browser only)', 'hb.hint': 'Template from templates/handbook.md. After running B or C, merge the "pending handbook increment" below by hand. Autosaves.',
-    'hb.export': 'Export handbook.md', 'hb.import': 'Import .md', 'hb.reset': 'Reset to empty template', 'hb.inc': 'Pending handbook increment (from the latest B / C output)', 'hb.incclear': 'Merged, clear',
+    'hb.title': 'Personal handbook (this browser only)', 'hb.hint': 'Template from templates/handbook.md. After running B or C, the "pending handbook increment" appears below; click "Append to handbook" to write it to the end. Edit the handbook first if you want to reword it. Autosaves.',
+    'hb.export': 'Export handbook.md', 'hb.import': 'Import .md', 'hb.reset': 'Reset to empty template', 'hb.inc': 'Pending handbook increment (from the latest B / C output)', 'hb.incclear': 'Merged by hand, clear', 'hb.incappend': 'Append to handbook',
     'a.title': 'Module A · Pre-interview Rehearsal', 'a.hint': 'Output: mismatch intercept and hard gates → JD ↔ evidence map → type forecast and skeletons → 5-minute checklist → QA plan (structure + reference sentence) → three-tag self-intro draft. No full answers, no pass-rate prediction.',
     'a.jd': 'JD full text (required)', 'a.resume': 'Résumé points (required; the résumé itself or 5–10 experiences with numbers. Remembered in this browser)',
     'a.round': 'Round', 'a.interviewer': 'Interviewer\'s position (title, no name)', 'a.planned': 'Planned duration (min)', 'a.intro': 'Self-intro length required (e.g. "3 minutes")',
@@ -354,6 +354,7 @@ function init() {
   $('#hb-reset').onclick = async () => { if (!confirm(t('hb.confirmreset'))) return; $('#hb').value = ''; LS.del('hb'); await ensureTemplates(); LS.set('hb', $('#hb').value); };
   $('#hb-inc-copy').onclick = () => copyText($('#hb-inc').dataset.md || '', $('#hb-status'));
   $('#hb-inc-clear').onclick = () => { $('#hb-inc-card').hidden = true; };
+  $('#hb-inc-append').onclick = () => { const inc = ($('#hb-inc').dataset.md || '').trim(); if (!inc) return; const hb = $('#hb').value.replace(/\s+$/, ''); $('#hb').value = (hb ? hb + '\n\n' : '') + inc + '\n'; LS.set('hb', $('#hb').value); $('#hb-inc-card').hidden = true; flash($('#hb-status'), t('hb.appended')); $('#hb').scrollTop = $('#hb').scrollHeight; };
   if (!gated) ensureTemplates();
   // A inputs persistence
   const aFields = ['a-jd', 'a-resume', 'a-round', 'a-interviewer', 'a-planned', 'a-intro', 'a-salary', 'a-start', 'a-jdsalary'];
