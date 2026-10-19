@@ -3,35 +3,84 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>InterviewLoop · 一场完整示例</title>
+<title>InterviewLoop · 产品设计、落地与完整示例</title>
+<meta name="description" content="从面试复盘问题出发，看 InterviewLoop 的产品取舍、可运行示例与验证边界，再开始你的一场训练。">
 <meta name="theme-color" content="#1f2a44">
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="style.css">
 <style>
-.demo-hero{max-width:1100px;margin:0 auto;padding:20px 16px 0}
-.demo-hero h2{margin:0 0 6px;font-size:20px}
-.demo-hero p{margin:4px 0;color:var(--muted)}
-.pill{display:inline-block;background:var(--warn-bg);color:var(--warn);border-radius:999px;padding:2px 10px;font-size:12px;margin-right:6px}
+:root{--show-accent:#126858}html{scroll-behavior:smooth;scroll-padding-top:90px}.showcase{max-width:1100px;margin:auto;padding:48px 24px}.eyebrow{font-size:12px;letter-spacing:2px;color:var(--show-accent);font-weight:700}.hero{display:grid;grid-template-columns:1.15fr 1fr;gap:40px;align-items:center}.hero h2{font-size:clamp(30px,4vw,46px);line-height:1.25;margin:18px 0}.lede{color:var(--muted);font-size:17px;max-width:570px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:24px 0}.action{display:inline-block;padding:11px 18px;border:1px solid var(--line);border-radius:8px;text-decoration:none;background:var(--card);font-weight:600}.action.primary{background:var(--show-accent);color:white;border-color:var(--show-accent)}.sample{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--show-accent);border-radius:12px;padding:24px;box-shadow:0 12px 35px #152d2810}.sample h3{font-size:21px;margin:10px 0 18px}.sample ol{padding-left:22px}.sample li{margin:14px 0}.sample small,.muted{color:var(--muted)}.block{margin-top:64px}.block h2{font-size:26px;line-height:1.35}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.tile{padding:22px;border:1px solid var(--line);background:var(--card);border-radius:10px}.tile h3{margin:10px 0;font-size:18px}.tile p{margin:10px 0}.num{color:var(--show-accent);font-weight:700;font-size:13px}.tradeoff{border-top:1px solid var(--line);padding-top:12px;color:var(--muted);font-size:13px}.validation{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:24px;border:1px solid var(--line);border-radius:10px}.validation h3{margin-top:0}.evidence{margin-top:36px;border:1px solid var(--line);border-radius:10px;background:var(--card);overflow:hidden}.evidence>summary{padding:20px;font-weight:650}.evidence .out{border:0}.tabs{position:static}.foot{padding-top:30px;margin-top:50px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}.top a{text-decoration:none}.top .sub{max-width:650px}@media(prefers-color-scheme:dark){:root{--show-accent:#69c7b0}.action.primary{color:#10251f}}@media(max-width:720px){.showcase{padding:28px 16px}.hero,.grid,.validation{grid-template-columns:1fr}.hero{gap:16px}.block{margin-top:42px}.top{position:static}.sample{padding:20px}.hero h2{font-size:32px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
 </head>
 <body>
 <header class="top">
-  <div><h1>InterviewLoop</h1><div class="sub">一场面试跑完是什么样 · A complete sample run</div></div>
+  <div><h1>InterviewLoop</h1><div class="sub">Cintia.H · 产品案例 / Product case study</div></div>
   <div class="spacer"></div>
-  <button class="sec" onclick="location.href='index.html'">回到工具 / Back to the tool</button>
+  <a href="https://github.com/interviewloop-cn/interviewloop">GitHub ↗</a>
+  <a class="action" href="#try">开始试用</a>
 </header>
-<div class="demo-hero">
-  <h2>候选人 L 的第六场面试：面前预演 → 面后笔记 → 面后复盘 → 结果回填</h2>
-  <p><span class="pill">全部虚构</span>候选人、公司、数字均为示范；行业行话与数量级按公开资料校准。不需要 API key，这一页只是把仓库里的示例文件渲染出来。</p>
-  <p>先看"结论卡"：这是每场复盘固定的五行。再看其他标签，是它背后的全部证据。</p>
-</div>
-<nav class="tabs" id="tabs"></nav>
-<main><div class="card"><div class="out" id="out">加载中…</div></div></main>
+<main class="showcase">
+  <section class="hero" aria-labelledby="hero-title">
+    <div>
+      <div class="eyebrow">从一个复盘问题，到一套可用的训练流程</div>
+      <h2 id="hero-title">面试结束了。<br>下一场，具体改什么？</h2>
+      <p class="lede">InterviewLoop 把面前预演、面后复盘和结果回填串成个人手册，让每场面试留下下一次可练的动作。</p>
+      <p>这个作品探索的是：怎样让 AI 的分析变成用户自己的判断与持续练习。</p>
+      <div class="actions"><a class="action primary" href="#decisions">看产品设计与取舍 ↓</a><a class="action" href="#evidence">看完整输出</a></div>
+      <p class="hint">已落地：Markdown 协议 · 网页版 · 单文件提示词 · Claude Code skill</p>
+    </div>
+    <aside class="sample" aria-label="虚构案例的复盘摘要">
+      <div class="eyebrow">一条训练动作怎样产生</div>
+      <h3>从“答得散”，到“学会删掉一条路线”</h3>
+      <ol>
+        <li><b>记录：</b>案例题讲了三条路线，约四分钟；明知一条与对方现状关系不大，仍讲完了。</li>
+        <li><b>发现：</b>复盘标记“案例失控”。这来自候选人笔记，不能当成面试官的真实评价。</li>
+        <li><b>训练：</b>先确认约束，删掉不适用的路线，练习三分钟收口。</li>
+        <li><b>积累：</b>写入手册，下次检查是否再出现；结果回来后校验原判断。</li>
+      </ol>
+      <small>虚构样本的解释性摘要，非真实用户效果；完整输出及来源见下方。</small>
+    </aside>
+  </section>
+  <section class="block" id="decisions" aria-labelledby="decision-title">
+    <div class="eyebrow">01 / 产品判断</div><h2 id="decision-title">让训练发生，需要做哪些取舍？</h2>
+    <div class="grid">
+      <article class="tile"><div class="num">保留人的判断</div><h3>有些答案，刻意留空</h3><p>提供应答骨架；只有候选人才能确认的经历、依据和承诺，标成“思考漏洞”，由本人补充。</p><p class="tradeoff">代价：无法一键完成，用户必须投入思考和练习。</p></article>
+      <article class="tile"><div class="num">跨场次积累</div><h3>每次复盘，留下增量</h3><p>把重复问题、证据口径和新观察写入个人手册，下一场带着已有记录继续训练。</p><p class="tradeoff">边界：记录不完整或有偏差，分析也会受影响。</p></article>
+      <article class="tile"><div class="num">让判断可检验</div><h3>结果出来，再回头核对</h3><p>先写判断及可能出错的依据，收到真实结果后再回填，保留预测失败的校准记录。</p><p class="tradeoff">边界：预测不是录用承诺，信号不能证明面试官的真实想法。</p></article>
+    </div>
+  </section>
+  <section class="block" aria-labelledby="validation-title">
+    <div class="eyebrow">02 / 落地与验证</div><h2 id="validation-title">交付了什么，证据支持到哪里？</h2>
+    <div class="validation">
+      <div><h3>已交付，可直接检查</h3><p>一套主协议与分类库、个人手册模板、六场虚构手册、一轮完整 A → B → C 示例，以及三种使用入口。</p><p><a href="../PROTOCOL.md">主协议</a> · <a href="../example/handbook-sample.md">六场手册</a> · <a href="https://github.com/interviewloop-cn/interviewloop">源代码</a></p></div>
+      <div><h3>早期验证，保留不确定性</h3><p>按项目已有自测记录，作者在三场真实面试中发现一个重复问题，也有一次结果预测出错。样本不足以证明能提高面试通过率。</p><p class="hint">下一步：验证陌生人能否理解并完成一次使用，以及训练动作能否在下一场执行。</p></div>
+    </div>
+    <p class="hint">展示迭代来自<a href="https://github.com/ruanyf/weekly/issues/12071#issuecomment-6031510046">读者关于信息密度的反馈</a>：先呈现通用问题与训练动作，再展开行业材料。</p>
+    <details class="evidence" id="evidence"><summary>展开完整案例：结论卡 → 输入与依据 → 结果回填 → 六场手册</summary>
+      <div style="padding:0 20px"><p><b>候选人 L 的第六场面试 · 全部虚构</b></p><p class="hint">行业背景为骨科器械临床市场。示例演示输出形态，并非效果验证；无需 API key。本轮未演示追问预演、跨轮对照和转录指标。</p></div>
+      <nav class="tabs" id="tabs" aria-label="案例材料"></nav>
+      <div class="out" id="out" role="region" aria-live="polite" aria-label="所选案例材料">加载中…</div>
+    </details>
+  </section>
+  <section class="block" id="try" aria-labelledby="try-title"><div class="eyebrow">03 / 亲自试一次</div><h2 id="try-title">从你下一场面试开始</h2><p>面前提供 JD 全文和简历要点；面后补笔记；收到结果后再回填。已有个人手册可一起提供。</p>
+    <div class="grid">
+      <article class="tile"><div class="num">普通求职者 · 从这里开始</div><h3>用你熟悉的聊天应用</h3><p>打开单文件提示词，复制内容或下载文件，交给常用模型；附 JD 和简历，发送“运行模块 A”。</p><a class="action primary" href="../PROMPT.zh.md">打开提示词 →</a><p class="hint">无需安装或 API key；模型应用可能有用量限制或费用。</p></article>
+      <article class="tile"><div class="num">已有模型 API key</div><h3>在浏览器里管理手册</h3><p>配置模型接口，完成预演、复盘和结果回填；用 Markdown 导出、备份你的手册。</p><a class="action" href="index.html">打开网页版 →</a><p class="hint">资料本地保存；远程 AI 分析需要联网。</p></article>
+      <article class="tile"><div class="num">开发者与进阶使用者</div><h3>接入 Claude Code</h3><p>通过 skill 使用本地录音转录、笔记草稿和手册写回，也可以阅读协议与分类库。</p><a class="action" href="https://github.com/interviewloop-cn/interviewloop#开发者接入">查看接入方式 →</a><p class="hint">分类库目前以中国互联网社招为起点。</p></article>
+    </div>
+    <p class="hint">数据边界：本项目没有自建分析后端。使用模型分析时，相关输入会发送到你选择的模型服务商；聊天应用同理。请按需脱敏并备份手册。</p>
+  </section>
+  <footer class="foot">作者 <a href="https://github.com/cintiahuang123-ai">Cintia.H</a> · <a href="https://github.com/interviewloop-cn/interviewloop/issues/new/choose">反馈一次使用中遇到的问题</a> · <a href="../README.md">项目说明 / English overview</a></footer>
+</main>
 <script src="md.js"></script>
 <script>
+function openEvidence() { if (location.hash === '#evidence') document.getElementById('evidence').open = true; }
+window.addEventListener('hashchange', openEvidence);
+openEvidence();
 (async () => {
   const { md2html } = window.ILmd;
-  const [loop, hb] = await Promise.all([fetch('../example/loop-sample.md').then(r => r.text()), fetch('../example/handbook-sample.md').then(r => r.text())]);
+  const read = async (url) => { const r = await fetch(url); if (!r.ok) throw new Error('无法读取案例资料'); return r.text(); };
+  const [loop, hb] = await Promise.all([read('../example/loop-sample.md'), read('../example/handbook-sample.md')]);
   const parts = loop.split(/\n(?=# 第[一二三四五]部分)/);
   const pick = (kw) => parts.find(p => p.startsWith('# ') && p.split('\n')[0].includes(kw)) || '';
   const b = pick('第四部分');
@@ -46,8 +95,8 @@
   ];
   const nav = document.getElementById('tabs'), out = document.getElementById('out');
   tabs.forEach(([name, md], i) => {
-    const btn = document.createElement('button'); btn.textContent = name; if (i === 0) btn.className = 'on';
-    btn.onclick = () => { [...nav.children].forEach(x => x.classList.remove('on')); btn.classList.add('on'); out.innerHTML = md2html(md); window.scrollTo(0, 0); };
+    const btn = document.createElement('button'); btn.textContent = name; btn.type = 'button'; btn.setAttribute('aria-pressed', String(i === 0)); if (i === 0) btn.className = 'on';
+    btn.onclick = () => { [...nav.children].forEach(x => { x.classList.remove('on'); x.setAttribute('aria-pressed', 'false'); }); btn.classList.add('on'); btn.setAttribute('aria-pressed', 'true'); out.innerHTML = md2html(md); };
     nav.appendChild(btn);
   });
   out.innerHTML = md2html(tabs[0][1]);

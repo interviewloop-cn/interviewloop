@@ -15,7 +15,7 @@ const LS = {
 const T = {
   zh: {
     subtitle: '面试候选人自训练系统 · v1.0', install: '安装到桌面',
-    privacy: '你的笔记、手册和 key 不经过任何服务器。所有内容只存在这个浏览器里；导出即备份。',
+    privacy: '手册与设置保存在本浏览器；分析时相关输入直接发送到你配置的模型服务商。请定期导出备份。',
     'tab.about': '关于', 'tab.hb': '手册', 'tab.a': 'A · 面前预演', 'tab.b': 'B · 面后复盘', 'tab.c': 'C · 结果回填', 'tab.t': '转录', 'tab.s': '设置',
     copy: '复制', download: '下载 .md', raw: '切换原文/渲染', stop: '停止', usehb: '附带个人手册',
     run: '运行模块 A', 'run.b': '运行模块 B', 'run.c': '运行模块 C',
@@ -32,7 +32,7 @@ const T = {
   },
   en: {
     subtitle: 'Self-Training System for Interview Candidates · v1.0', install: 'Install as app',
-    privacy: 'Your notes, handbook and key never pass through a server. Everything lives only in this browser; export is your backup.',
+    privacy: 'Your handbook and settings are stored in this browser. Analysis sends relevant input directly to your configured model provider. Export for backups.',
     'tab.about': 'About', 'tab.hb': 'Handbook', 'tab.a': 'A · Pre-interview Rehearsal', 'tab.b': 'B · Post-interview Review', 'tab.c': 'C · Outcome Backfill', 'tab.t': 'Transcribe', 'tab.s': 'Settings',
     copy: 'Copy', download: 'Download .md', raw: 'Toggle raw/rendered', stop: 'Stop', usehb: 'Attach personal handbook',
     run: 'Run Module A', 'run.b': 'Run Module B', 'run.c': 'Run Module C',
@@ -63,10 +63,10 @@ const T = {
     'ab.s1': 'Before an interview: open "A · Pre-interview Rehearsal", paste the JD and your résumé points (both required), and get the mismatch intercept, the QA plan and a tagged self-intro draft.',
     'ab.s2': 'After an interview: open "B · Post-interview Review" and fill in the notes (incomplete is fine; the model asks only for what is missing) to get the type judgement, pitfalls, signal table and prediction.',
     'ab.s3': 'When the result arrives: open "C · Outcome Backfill"; one line goes back into the handbook, plus a calibration record if the prediction was wrong.',
-    'ab.p5': 'Your notes, handbook and key live only in this browser and never pass through a server. This page is the zero-setup trial; the full version is the Claude Code skill (local transcription, notes drafted from the transcript, automatic handbook write-back): npx skills add interviewloop-cn/interviewloop',
+    'ab.p5': 'Your handbook and settings are stored locally; analysis input is sent to your chosen model provider. This web app requires your own API key. The Claude Code skill adds (local transcription, notes drafted from the transcript, automatic handbook write-back): npx skills add interviewloop-cn/interviewloop',
     'ab.go': 'Start with Module A', 'ab.gate': 'Re-read the three steps',
     'gate.title': 'Three things before you start', 'gate.s1t': 'What this is.', 'gate.s1': 'AI that trains you, not AI that interviews you. It does not answer for you; it trains the structure of your answers and your understanding of the role and industry. Three modules: Pre-interview Rehearsal (A) → interview → Post-interview Review (B) → Outcome Backfill (C) → your handbook grows one row → next A. You write down your judgement before the result arrives, then check it; the correction goes back into your handbook. Even a failed round grows the sample.',
-    'gate.s2t': 'Where your data is.', 'gate.s2': 'This is a static page. Handbook, notes, transcripts and API key live only in this browser\'s local storage; nothing passes through a server. When you run a module, the browser sends the protocol + taxonomy + your input directly to the model endpoint you configured, with no third party in between. Clearing browser data erases everything, so export your handbook regularly.',
+    'gate.s2t': 'Where your data is.', 'gate.s2': 'This static page has no project-operated analysis backend. Your handbook and settings are stored in this browser. Running a module sends the protocol, taxonomy and relevant input directly to your configured model provider, using your API key for authentication. Clearing browser data deletes local records; export your handbook regularly.',
     'gate.s3t': 'Precondition.', 'gate.s3': 'This is not a shortcut: the JD and your résumé are both required, the notes are yours to write, the blanks are yours to fill. It only works for people willing to be honest with themselves: the tool cannot stop you from writing notes that flatter you, and each judgement is only as good as your notes. Covers one candidate, experienced hire or campus; group interviews are not covered. The web page is the zero-setup trial; the Claude Code skill is the full version (local transcription, automatic handbook write-back).',
     'gate.ok': 'I have read this. I know the data stays local and I know the precondition.', 'gate.go': 'Enter',
     'hb.title': 'Personal handbook (this browser only)', 'hb.hint': 'Template from templates/handbook.md. After running B or C, the "pending handbook increment" appears below; click "Append to handbook" to write it to the end. Edit the handbook first if you want to reword it. Autosaves.',

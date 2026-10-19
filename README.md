@@ -1,44 +1,78 @@
-**[中文](#interviewloop--面试候选人自训练系统) ｜ [English](#interviewloop--self-training-system-for-interview-candidates)**
+**中文 ｜ [English](#interviewloop--self-training-system-for-interview-candidates)**
 
-# InterviewLoop · 面试候选人自训练系统
+# InterviewLoop · 让每场面试成为下一场的训练材料
 
-> 中文是唯一主版本，英文由中文生成（协议 v0.4），两者不一致时以中文为准。
+**一个从真实面试复盘问题出发，落地为协议、个人手册和可用工具的产品实践。**
 
-[![一场面试复盘的结论卡（虚构样本）](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
+作者：[Cintia.H](https://github.com/cintiahuang123-ai) · 面向愿意持续复盘的求职者 · 当前重点：验证复盘方法与使用体验
 
-作者：[Cintia.H](https://github.com/cintiahuang123-ai)
+[**看产品案例与演示 →**](https://interviewloop-cn.github.io/interviewloop/web/demo.html) ｜ [直接试用](#开始你的一场训练) ｜ [开发者接入](#开发者接入)
 
-**三十秒看懂**：[看一场完整示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html)（不用 key）｜[打开网页版](https://interviewloop-cn.github.io/interviewloop/web/)｜[零安装：单文件提示词](PROMPT.zh.md)（上传到 Kimi、DeepSeek、豆包就能跑）
+[![InterviewLoop 产品案例页：问题、训练动作与设计取舍](docs/product-showcase.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
 
-## 这是什么
+## 从什么问题出发
 
-**InterviewLoop 用 AI 训练你，不是用 AI 面试你。** 它不替你答题，也不扮演面试官。它训练的是你的应答结构，和你对岗位、对行业的进一步认知，一场真实面试一场地练，让你和下一份工作更匹配。每一次面试都变成可积累的训练样本；样本是你的，不离开你的机器。
+面试结束后，记得自己答了什么，不等于知道下一场该改什么。一次性的 AI 建议也很难告诉你：同一个问题是否反复出现，上次的判断有没有被真实结果验证。
 
-```
-模块 A  面前预演
-   → 面试 →
-模块 B  面后复盘
-   →
-模块 C  结果回填
-   → 手册长一行 →
-模块 A  下一次
-```
+InterviewLoop 把一次问答延伸成一条可以持续积累的训练链路：
 
-三步闭环。你的个人手册（劣势追踪表、校准记录、信号命中）跟着你一场一场长。每场面后，你先写下对这场的判断，再等真实结果来检验，判断错在哪写回手册。这一步不是为了算得准，是为了逼你先下判断、再对答案。工具不替你填只有你能填的东西：那些位置留空，打上 `【空位·思考漏洞】`。空位是训练点，不是功能缺失。
+**面前对齐岗位与证据 → 面后定位问题 → 结果出来后校验判断 → 带着手册进入下一场。**
 
-这一轮没过也没关系，样本在长。作者用自己三场真实面试试跑：同一个失分模式三场全中，凭感觉复盘时完全没发现；三场里工具的预测错了一场，错的那条也记进了校准记录。它的价值不在预测准，在强迫你做有结构的复盘。
+## 一个例子：把“我答得有点散”变成下一次的训练动作
+
+以下摘自[仓库的虚构案例](example/loop-sample.md)，为便于理解做了摘要，不是用户实测效果：
+
+| 环节 | 案例里发生了什么 |
+|---|---|
+| 面后笔记 | 候选人在案例题中讲了三条路线，约四分钟；意识到其中一条与对方现状关系不大，仍然讲完了 |
+| 复盘发现 | 输出标记“案例失控”，并注明依据来自候选人笔记；不能据此断言面试官的真实评价 |
+| 下一次练什么 | 先确认约束，再分路线；删掉与当前场景无关的路线，练习三分钟收口 |
+| 怎样积累 | 把本次观察写入手册，下次看是否再次出现；真实结果回来后，再检验之前的判断 |
+
+[查看五行结论卡和背后的完整证据 →](https://interviewloop-cn.github.io/interviewloop/web/demo.html#evidence)
+
+## 产品取舍：为什么这样做
+
+| 需要解决的问题 | 已落地的设计 | 接受的代价与边界 |
+|---|---|---|
+| AI 写出的完整答案，未必是候选人自己的判断 | 输出回答骨架；涉及个人判断的位置保留 `【空位·思考漏洞】` | 用户必须补充、练习，不能一键得到完整答案 |
+| 每场复盘独立，难以发现重复问题 | 个人手册记录失分模式、证据口径与每场增量 | 需要持续记录；输入质量影响结论质量 |
+| 事后容易把结果解释成“早就知道” | 先记录预测及可能出错的依据，再用模块 C 回填真实结果 | 预测只是待校验的判断，不是录用承诺 |
+| 行业判断容易被套用到所有岗位 | 分类库允许“未分类”，输出保留来源与自检 | 当前分类源于中国互联网社招的小样本，泛化能力仍需验证 |
+| 同一种方法需要在不同环境里使用 | 同一份 Markdown 协议，提供单文件提示词、网页版、Claude Code skill | 不同入口的自动化程度不同；网页版需要自备模型 API key |
+
+## 已做出来什么，验证到了哪里
+
+- **已交付：** 中文主协议、分类库、个人手册模板；虚构的六场手册和一轮完整示例；单文件提示词、静态网页版与 Claude Code skill。可直接查看和试用。
+- **作者自测：** 按项目已有记录，作者用三场真实面试试跑，发现一个重复出现的失分模式；结果预测有一场出错。它是早期问题线索，不足以证明能提高面试通过率。
+- **展示反馈：** [一位完整阅读演示的读者](https://github.com/ruanyf/weekly/issues/12071#issuecomment-6031510046)指出行业材料密集、难以迁移到自身岗位。本次展示因此先解释通用问题与训练动作，再提供完整案例。
+- **下一步验证：** 陌生读者能否说清工具的价值和第一步；求职者能否完成一次使用，并在下一场真正执行一条训练动作。尚不宣称已获得规模化验证。
+
+[阅读协议](PROTOCOL.md) · [查看六场手册](example/handbook-sample.md) · [查看迭代方向](ROADMAP.md)
+
+## 开始你的一场训练
+
+**不需要安装或 API key 的起点：** 打开 [单文件提示词](PROMPT.zh.md)，复制内容或下载文件，交给你常用的模型聊天应用；附上 JD 全文和简历要点，发送“运行模块 A”。模型可能有自己的使用限制或费用。
+
+| 你现在的阶段 | 准备什么 | 这一步得到什么 |
+|---|---|---|
+| 面试前 · A | JD 全文 + 简历要点；有手册也一起提供 | 岗位与证据对照、回答骨架、待你补充的思考空位 |
+| 面试后 · B | 面后笔记或转录；可附预案与手册 | 五行结论卡、依据、下一次训练重点与手册增量 |
+| 收到结果 · C | 通过 / 未通过 / 走到第 N 轮 / 未知 | 结果回填，必要时更新校准记录 |
+
+也可以[打开网页版](https://interviewloop-cn.github.io/interviewloop/web/)（自备 API key）。先想看输出，就[看示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html)，无需输入个人材料。
 
 ## 用之前先看这三条
 
-**这不是捷径。** 面试中实时提词的工具，和扮演面试官的 AI，都不会增加你自己的思考。这个工具逼你思考：JD 和简历都必须给，面后笔记要你自己写，空位要你自己填。想要一个替你答题的东西，这里不是。
+**需要你参与训练。** 面前预演需要 JD 和简历，复盘需要面试记录，思考空位需要你补充。输出帮助你安排训练，不能代替实际练习。
 
 **只对愿意对自己诚实的人有用。** 工具无法防止你给自己写有利的笔记。它的每一条判断只和你给它的笔记一样好，它记的每一个计数都是你自己填的。这是前提，不是漏洞。
 
 **支持哪些文本。** 模块 A 吃 JD 全文和简历要点；模块 B 吃面后笔记（按模板填）和转录（可选，有转录才能用 `[原话]` 标签）；模块 C 吃一行结果。三个模块都可以附上你的个人手册。
 
-**不经过任何服务器。** 手册、笔记、转录全部在你自己的机器或浏览器里。持久化靠 markdown 导出 / 导入。用网页版时，模型 API key 是你自己的，只存在浏览器里。
+**本地保存，模型分析需要发送输入。** 网页版把手册和设置保存在浏览器，通过 Markdown 导出 / 导入备份，不经过项目自建后端。运行分析时，相关输入直接发送到你配置的模型服务商，API key 用于该请求的身份验证。使用聊天应用时，材料也会发送给该应用；请按需脱敏。
 
-## 怎么用
+## 开发者接入
 
 产品本体是一份 markdown 协议。四种用法，从轻到重：
 
@@ -46,10 +80,10 @@
 |---|---|---|
 | [看示例](https://interviewloop-cn.github.io/interviewloop/web/demo.html) | 什么都不用 | 想先知道它输出什么 |
 | [单文件提示词](PROMPT.zh.md) | 一个你常用的大模型聊天应用 | 不想装东西、没有 API key。把文件上传到 Kimi、DeepSeek、豆包、通义千问、智谱、ChatGPT 或 Claude，发一句"运行模块 A"加 JD 和简历 |
-| [网页版](https://interviewloop-cn.github.io/interviewloop/web/) | 一个模型 API key | 想要本地保存手册、离线可用、导入导出 |
+| [网页版](https://interviewloop-cn.github.io/interviewloop/web/) | 一个模型 API key | 想要本地保存手册、离线查看资料、导入导出 |
 | Claude Code skill | Claude Code | 想要录音本地转录、自动生成笔记草稿、自动写回手册 |
 
-**Claude Code skill（推荐）**
+**Claude Code skill**
 
 ```
 npx skills add interviewloop-cn/interviewloop
@@ -72,7 +106,7 @@ npx skills add interviewloop-cn/interviewloop
 
 `SKILL.md` 是 Claude Code skill 的入口，只负责加载协议、管理本地工作区和写回手册，本身不含判断规则。
 
-`web/` 下的网页是协议的一个客户端：选模型接口、填你自己的 API key（只存浏览器）、跑三个模块。首次加载后断网可用；它发出的唯一网络请求，是你主动触发的、发往你自己模型或语音接口的那一次。
+`web/` 下的网页是协议的一个客户端：选模型接口、填你自己的 API key（只存浏览器）、跑三个模块。页面与资料加载、缓存后可离线查看；调用远程模型或语音接口仍需联网。分析请求直接发往你配置的服务商。
 
 ### 网页版支持哪些模型
 
@@ -92,7 +126,7 @@ npx skills add interviewloop-cn/interviewloop
 
 1. 用浏览器打开：`https://interviewloop-cn.github.io/interviewloop/web/`（Chrome / Edge / Safari 均可）。仓库根目录会自动跳转。
 2. 选择**安装**（桌面端：地址栏的安装图标；iOS Safari：分享 → 添加到主屏幕；Android Chrome：菜单 → 安装应用）。
-3. 从桌面或主屏幕打开。首次加载后断网可用。
+3. 从桌面或主屏幕打开。缓存的页面和资料可离线查看；远程 AI 分析需要联网。
 
 ## v1.0 边界
 
@@ -142,41 +176,45 @@ ROADMAP.md
 
 # InterviewLoop · Self-Training System for Interview Candidates
 
-[![Verdict card of one interview review (fictional sample, in Chinese)](docs/sample-verdict-card.png)](https://interviewloop-cn.github.io/interviewloop/web/demo.html)
+**A product case study: turning an interview-review problem into a protocol, a personal handbook and working tools.**
 
-Author: [Cintia.H](https://github.com/cintiahuang123-ai)
+By [Cintia.H](https://github.com/cintiahuang123-ai). [Explore the product case and demo (Chinese)](https://interviewloop-cn.github.io/interviewloop/web/demo.html) · [Try the single-file prompt](PROMPT.en.md)
 
-**In thirty seconds**: [see a full sample run](https://interviewloop-cn.github.io/interviewloop/web/demo.html) (no key) ｜ [open the web app](https://interviewloop-cn.github.io/interviewloop/web/) ｜ [no install: the single-file prompt](PROMPT.en.md) (upload it to ChatGPT, Claude, DeepSeek or Kimi)
+Chinese is the canonical version. The English overview below summarizes the design and usage; the protocol and examples have their own version notes.
 
-> **Chinese is the canonical version**; the English section is generated from it (source: zh section, protocol v0.4, glossary v1). Where they differ, the Chinese text wins. All English terms follow `GLOSSARY.md`.
+## The problem and a concrete example
 
-## What this is
+Remembering an interview does not necessarily tell you what to practise next. Isolated AI advice also makes it difficult to see repeated problems or check earlier judgements against real outcomes.
 
-**InterviewLoop uses AI to train you, not to interview you.** It does not answer for you and does not play the interviewer. It trains the structure of your answers and your understanding of the role and the industry, one real interview at a time, so that you and your next job fit better. Every interview becomes a training sample you can accumulate; the sample belongs to you and never leaves your machine.
+InterviewLoop connects **preparation → review → outcome backfill → the next interview**, carrying the record forward in a personal handbook.
 
-```
-Module A  Pre-interview rehearsal
-   → the interview →
-Module B  Post-interview review
-   →
-Module C  Outcome backfill
-   → your handbook grows one row →
-Module A  next interview
-```
+In the repository's **fictional example**, a candidate spends about four minutes presenting three approaches, including one they already suspect is irrelevant. The review flags the issue based on the candidate's notes and proposes a practice action: clarify constraints, remove irrelevant approaches and rehearse a three-minute answer. The observation goes into the handbook for later comparison. This illustrates the workflow; it is not evidence of real-world effectiveness.
 
-Three steps close a loop. Your personal handbook (weakness tracker, calibration records, signal hit log) grows one interview at a time. After each interview you write down your judgement before the result arrives, then check it; where the judgement was wrong goes back into your handbook. The point is not to forecast accurately but to make you commit and then check. The tool never fills in what only you can know: those places are left blank and marked `【空位·思考漏洞】` (Blank · Thinking Gap). A blank is a training point, not a missing feature.
+## Product decisions and trade-offs
 
-Even if this round fails, the sample grows. In the author's own trial on three real interviews, one pitfall appeared in all three and had gone unnoticed in gut-feel review; the tool's prediction was wrong in one of the three, and that miss went into the calibration record too. Its value is not accurate prediction; it is forcing a structured review.
+| Problem | Implemented decision | Cost or limit |
+|---|---|---|
+| Generated answers may bypass the candidate's own thinking | Provide answer structures and leave personal judgements as explicit blanks | The candidate must fill them and practise |
+| Separate reviews lose recurring patterns | Track observations and evidence in a persistent handbook | Record quality affects analysis quality |
+| Hindsight can obscure earlier mistakes | Record a judgement and its uncertainty, then backfill the actual result | Predictions are not hiring guarantees |
+| A small taxonomy may not generalize | Allow unclassified cases and retain sources and self-checks | The taxonomy starts from a small Chinese internet-industry sample |
+| Users work in different environments | Share one protocol across a prompt file, web app and Claude Code skill | Automation and setup requirements differ |
+
+## Delivered and still to validate
+
+The repository includes the protocol, taxonomy, handbook templates, a fictional six-interview handbook, a full sample loop and three usable entry points. The author's existing self-report describes three real interview trials: one repeated pitfall was identified, and one outcome prediction was wrong. That is an early signal, not proof of improved interview success.
+
+A reader [reported difficulty understanding the dense industry example](https://github.com/ruanyf/weekly/issues/12071#issuecomment-6031510046). The showcase now introduces the transferable problem and practice action before exposing the full evidence. Next to validate: whether a newcomer can understand and complete a first use, and carry an action into their next interview.
 
 ## Read this before you use it
 
-**It is not a shortcut.** Tools that answer for you in real time, or an AI that plays interviewer, add nothing to your own thinking. This one makes you do the thinking: the JD and your résumé are both required, the post-interview notes are yours to write, and the blanks are yours to fill. If you want something that answers for you, this is the wrong tool.
+**It is not a shortcut.** This workflow requires your participation: the JD and your résumé are both required, the post-interview notes are yours to write, and the blanks are yours to fill. If you want something that answers for you, this is the wrong tool.
 
 **It only works for people willing to be honest with themselves.** The tool cannot stop you from writing notes that flatter you. Every judgement it makes is only as good as the notes you give it, and every count it keeps is a count you filled in. This is a precondition, not a loophole.
 
 **What text it takes.** Module A takes the JD and your résumé points; Module B takes post-interview notes (on the template) and, optionally, a transcript (the `[VERBATIM]` tag is only available with one); Module C takes a one-line result. All three can carry your personal handbook.
 
-**Nothing goes through a server.** Your handbook, notes and transcripts stay on your machine or in your browser. Persistence is markdown export and import. If you use the web page, you bring your own model API key, and the key is stored only in your browser.
+**Local storage, remote analysis.** The web app stores your handbook and settings in your browser and has no project-operated backend. Running analysis sends relevant input directly to your configured model provider, using your API key for authentication. Uploading material to a chat app sends it to that service too. Export Markdown for backups and redact sensitive inputs as needed.
 
 ## How to use it
 
@@ -212,13 +250,13 @@ Three module inputs:
 
 `SKILL.md` is the entry point of the Claude Code skill: it loads the protocol, manages your local workspace and writes increments back to the handbook. It contains no judgement rules of its own.
 
-The web page under `web/` is one client of the protocol: pick a model endpoint, paste your own API key (stored only in your browser), and run the three modules. It works offline after the first load; the only network requests it ever makes are the ones you trigger to your own model or speech endpoint.
+The web page under `web/` is one client of the protocol: pick a model endpoint, paste your own API key (stored only in your browser), and run the three modules. Cached pages and reference material can be viewed offline; remote model and speech requests require a connection and go directly to your configured provider.
 
 ### Install the web page as an app (PWA)
 
 1. Open the page in a browser: `https://interviewloop-cn.github.io/interviewloop/web/` (Chrome, Edge or Safari). The repository root redirects there.
 2. Choose **Install** (desktop: the icon in the address bar; iOS Safari: Share → Add to Home Screen; Android Chrome: menu → Install app).
-3. Open it from your desktop or home screen. After the first load it works offline.
+3. Open it from your desktop or home screen. Cached pages and material are available offline; remote AI analysis requires a connection.
 
 ## Scope of v1.0
 
